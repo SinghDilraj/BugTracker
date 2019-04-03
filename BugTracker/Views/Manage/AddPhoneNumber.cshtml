@@ -1,9 +1,11 @@
 ﻿@model BugTracker.Models.AddPhoneNumberViewModel
-@{
-    ViewBag.Title = "Phone Number";
-}
 
-<h2>@ViewBag.Title.</h2>
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("AddPhoneNumber", "Manage")">Login</a>
+    </li>
+</ol>
 
 @using (Html.BeginForm("AddPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -24,6 +26,5 @@
     </div>
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script src="~/vendor/jquery/jquery.validate.min.js"></script>
+

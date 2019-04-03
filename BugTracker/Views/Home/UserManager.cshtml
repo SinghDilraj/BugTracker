@@ -1,6 +1,79 @@
-﻿<!-- Breadcrumbs-->
+﻿@model List<ApplicationUser>
+
+<!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="@Url.Action("UserManager", "Home")">User Manager</a>
     </li>
 </ol>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        User List
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Admin</th>
+                        <th>Project Manager</th>
+                        <th>Developer</th>
+                        <th>Submitter</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Admin</th>
+                        <th>Project Manager</th>
+                        <th>Developer</th>
+                        <th>Submitter</th>
+                    </tr>
+                </tfoot>
+                <tbody class="text-primary">
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>
+                                @user.UserName
+                            </td>
+                            <td>
+                                @user.Email
+                            </td>
+                            <td>
+
+                                @if (user.Roles.Any(p => p.RoleId == "1f99efc6-9ad9-466a-98f8-230285c297f9"))
+                                {
+                                    <i class="fa fa-flag" aria-hidden="true"></i>
+                                }
+                            </td>
+                            <td>
+                                @if (user.Roles.Any(p => p.RoleId == "813057f9-e862-44d7-9d3a-b52bc7776615"))
+                                {
+                                    <i class="fa fa-flag" aria-hidden="true"></i>
+                                }
+                            </td>
+                            <td>
+                                @if (user.Roles.Any(p => p.RoleId == "6ff5d3aa-8f34-49ea-9813-f4b4e6409928"))
+                                {
+                                    <i class="fa fa-flag" aria-hidden="true"></i>
+                                }
+                            </td>
+                            <td>
+                                @if (user.Roles.Any(p => p.RoleId == "e2fdd0df-dca5-438d-a173-4c0df11467e1"))
+                                {
+                                    <i class="fa fa-flag" aria-hidden="true"></i>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
