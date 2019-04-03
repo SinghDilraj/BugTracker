@@ -1,11 +1,15 @@
 ﻿@model BugTracker.Models.SendCodeViewModel
-@{
-    ViewBag.Title = "Send";
-}
 
-<h2>@ViewBag.Title.</h2>
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("SendCode", "Account")">Send Code</a>
+    </li>
+</ol>
 
-@using (Html.BeginForm("SendCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+
+@using (Html.BeginForm("SendCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
     @Html.AntiForgeryToken()
     @Html.Hidden("rememberMe", @Model.RememberMe)
     <h4>Send verification code</h4>
@@ -19,6 +23,5 @@
     </div>
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script src="~/vendor/jquery/jquery.validate.min.js"></script>
+

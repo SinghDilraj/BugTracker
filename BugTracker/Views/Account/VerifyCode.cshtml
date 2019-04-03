@@ -1,11 +1,14 @@
 ﻿@model BugTracker.Models.VerifyCodeViewModel
-@{
-    ViewBag.Title = "Verify";
-}
 
-<h2>@ViewBag.Title.</h2>
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("VerifyCode", "Account")">Verify</a>
+    </li>
+</ol>
 
-@using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+@using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
     @Html.AntiForgeryToken()
     @Html.Hidden("provider", @Model.Provider)
     @Html.Hidden("rememberMe", @Model.RememberMe)
@@ -33,6 +36,5 @@
     </div>
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script src="~/vendor/jquery/jquery.validate.min.js"></script>
+
