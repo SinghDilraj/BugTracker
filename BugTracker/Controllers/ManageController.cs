@@ -66,7 +66,7 @@ namespace BugTracker.Controllers
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
-                UserName = User.Identity.Name,
+                DisplayName = UserManager.FindById(userId).DisplayName,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
@@ -76,7 +76,42 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-        
+        //
+        // GET: /Manage/ChangeDisplayName
+        [HttpGet]
+        public ActionResult ChangeDisplayName(ChangeDisplayNameViewModel model)
+        {
+            model.DisplayName = UserManager.FindByName(User.Identity.Name).DisplayName;
+            return View(model);
+        }
+
+        //
+        // POST: /Manage/ChangeName
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeDisplayName(ChangeDisplayNameViewModel model, string userId)
+        {
+            if (!ModelState.IsValid && !string.IsNullOrWhiteSpace(userId))
+            {
+                return View(model);
+            }
+
+            ApplicationUser user = await UserManager.FindByIdAsync(userId);
+
+            if(user != null)
+            {
+                user.DisplayName = model.DisplayName;
+                await UserManager.UpdateAsync(user);
+                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                return RedirectToAction("Index", "Manage");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "User Name Update Failed, Please try again later.");
+                return RedirectToAction("Index", "Manage");
+            }
+
+        }
 
         //
         // POST: /Manage/RemoveLogin
