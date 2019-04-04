@@ -1,0 +1,45 @@
+﻿@model UserManagerRolesViewModel
+
+@using (Html.BeginForm("Roles", "Home", new { id = Model.Id }, FormMethod.Post, new { type = "submit" }))
+{
+    <td>
+        @if (Model.Admin)
+        {
+            @Html.CheckBoxFor(p => p.Admin, new { @class = "form-check-input ml-4", @checked = "true" })
+        }
+        else
+        {
+            @Html.CheckBoxFor(p => p.Admin, new { @class = "form-check-input ml-4" })
+        }
+    </td>
+    <td>
+        @if (Model.ProjectManager)
+        {
+            @Html.CheckBoxFor(p => p.ProjectManager, new { @class = "form-check-input ml-4", @checked = "true" })
+        }
+        else
+        {
+            @Html.CheckBoxFor(p => p.ProjectManager, new { @class = "form-check-input ml-4" })
+        }
+    </td>
+    <td>
+        @if (Model.Developer)
+        {
+            @Html.CheckBoxFor(p => p.Developer, new { @class = "form-check-input ml-4", @checked = "true" })
+        }
+        else
+        {
+            @Html.CheckBoxFor(p => p.Developer, new { @class = "form-check-input ml-4" })
+        }
+    </td>
+    <td>
+        @if (Model.Submitter)
+        {
+            @Html.CheckBoxFor(p => p.Submitter, new { @class = "form-check-input ml-4", @checked = "true" })
+        }
+        else
+        {
+            @Html.CheckBoxFor(p => p.Submitter, new { @class = "form-check-input ml-4" })
+        }
+    </td>
+}

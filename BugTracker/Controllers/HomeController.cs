@@ -1,4 +1,6 @@
 ﻿using BugTracker.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,13 @@ namespace BugTracker.Controllers
     {
         private ApplicationDbContext DbContext;
 
+        private UserManager<ApplicationUser> DefaultUserManager;
+
         public HomeController()
         {
             DbContext = new ApplicationDbContext();
 
+            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
 
         public ActionResult Index()
@@ -23,16 +28,98 @@ namespace BugTracker.Controllers
             return View();
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult UserManager()
         {
             List<ApplicationUser> users = DbContext.Users.Select(p => p).ToList();
             return View(users);
         }
 
-        public ActionResult Contact()
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult Roles(UserManagerRolesViewModel model, string id)
         {
-            return View();
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                if (DefaultUserManager.IsInRole(id, "Admin"))
+                {
+                    model.Admin = true;
+                }
+                else
+                {
+                    model.Admin = false;
+                }
+
+                if (DefaultUserManager.IsInRole(id, "Project Manager"))
+                {
+                    model.ProjectManager = true;
+                }
+                else
+                {
+                    model.ProjectManager = false;
+                }
+
+                if (DefaultUserManager.IsInRole(id, "Developer"))
+                {
+                    model.Developer = true;
+                }
+                else
+                {
+                    model.Developer = false;
+                }
+
+                if (DefaultUserManager.IsInRole(id, "Submitter"))
+                {
+                    model.Submitter = true;
+                }
+                else
+                {
+                    model.Submitter = false;
+                }
+
+                model.Id = id;
+
+                return PartialView("_Roles", model);
+            }
+        }
+
+        [HttpPost]
+        [ActionName("Roles")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult RolesPost(UserManagerRolesViewModel model, string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                if (model.Admin == true)
+                {
+                    DefaultUserManager.AddToRole(id, "Admin");
+                }
+
+                if (model.ProjectManager == true)
+                {
+                    DefaultUserManager.AddToRole(id, "Project Manager");
+                }
+
+                if (model.Developer == true)
+                {
+                    DefaultUserManager.AddToRole(id, "Developer");
+                }
+
+                if (model.Submitter == true)
+                {
+                    DefaultUserManager.AddToRole(id, "Submitter");
+                }
+
+                return View(model);
+            }
         }
     }
 }
