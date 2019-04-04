@@ -102,23 +102,39 @@ namespace BugTracker.Controllers
                 {
                     DefaultUserManager.AddToRole(id, "Admin");
                 }
+                else
+                {
+                    DefaultUserManager.RemoveFromRole(id, "Admin");
+                }
 
                 if (model.ProjectManager == true)
                 {
                     DefaultUserManager.AddToRole(id, "Project Manager");
+                }
+                else
+                {
+                    DefaultUserManager.RemoveFromRole(id, "Project Manager");
                 }
 
                 if (model.Developer == true)
                 {
                     DefaultUserManager.AddToRole(id, "Developer");
                 }
+                else
+                {
+                    DefaultUserManager.RemoveFromRole(id, "Developer");
+                }
 
                 if (model.Submitter == true)
                 {
                     DefaultUserManager.AddToRole(id, "Submitter");
                 }
+                else
+                {
+                    DefaultUserManager.RemoveFromRole(id, "Submitter");
+                }
 
-                return View(model);
+                return RedirectToAction(nameof(HomeController.UserManager));
             }
         }
     }
