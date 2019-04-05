@@ -1,0 +1,74 @@
+﻿@model List<HomeProjectViewModel>
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("AllProjects", "Home")">All Projects</a>
+    </li>
+</ol>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-file"></i>
+        All Projects &nbsp &nbsp &nbsp
+        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+        {
+            <a href="@Url.Action("CreateProject", "Home")" class="text-primary"><i class="fas fa-plus"></i> Create Project</a>
+        }
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped display" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Members</th>
+                        <th>Tickets</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Assign</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Members</th>
+                        <th>Tickets</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Assign</th>
+                    </tr>
+                </tfoot>
+                <tbody class="text-primary">
+                    @foreach (var project in Model)
+                    {
+                        <tr>
+                            <td>@project.Name</td>
+                            <td>@project.Users.Count()</td>
+                            <td>@project.Tickets.Count()</td>
+                            <td>@project.DateCreated.ToString()</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
+                                {
+                                    <i>never</i>
+                                }
+                                else
+                                {
+                                    project.DateUpdated.ToString();
+                                }
+                            </td>
+                            <td><a href="@Url.Action("EditProject", "Home", new {id = project.Id})"><i class="fa fa-wrench ml-3"></i></a></td>
+                            <td><a href="@Url.Action("DeleteProject", "Home", new {id = project.Id})"><i class="fa fa-trash ml-4"></i></a></td>
+                            <td><a href="@Url.Action("AssignProject", "Home", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

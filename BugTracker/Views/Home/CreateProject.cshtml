@@ -1,0 +1,22 @@
+﻿@model HomeProjectViewModel
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("CreateProject", "Home")">Create Project</a>
+    </li>
+</ol>
+<div class="container">
+    <div class="row">
+        <form method="post">
+            <div class="form-group">
+                @Html.LabelFor(p => p.Name, "Project Name")
+                @Html.TextBoxFor(p => p.Name, new { @class = "form-control", type = "text" })
+                @Html.ValidationMessageFor(p => p.Name)
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>

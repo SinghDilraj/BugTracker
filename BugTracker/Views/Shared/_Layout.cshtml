@@ -103,12 +103,15 @@
                 </li>
             }
 
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("AllProjects", "Home")">
-                    <i class="fas fa-fw fa-archive"></i>
-                    <span>All Projects</span>
-                </a>
-            </li>
+            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AllProjects", "Home")">
+                        <i class="fas fa-fw fa-archive"></i>
+                        <span>All Projects</span>
+                    </a>
+                </li>
+            }
 
             <li class="nav-item">
                 <a class="nav-link" href="@Url.Action("MyProjects", "Home")">
@@ -184,6 +187,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin.min.js"></script>
+
+    <!-- JQuery Validation -->
+    <script src="~/vendor/jquery/jquery.validate.min.js"></script>
 
 </body>
 

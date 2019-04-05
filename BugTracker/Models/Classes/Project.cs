@@ -11,8 +11,7 @@ namespace BugTracker.Models.Classes
         public string Name { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
-        public virtual ApplicationUser User { get; set; }
-        public string UserId { get; set; }
+        public virtual List<ApplicationUser> Users { get; set; }
         public virtual List<Ticket> Tickets { get; set; }
 
         public Project()

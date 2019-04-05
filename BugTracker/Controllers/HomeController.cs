@@ -1,5 +1,6 @@
 ﻿using BugTracker.Models;
-using BugTracker.ViewModels.Models;
+using BugTracker.Models.Classes;
+using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -137,6 +138,73 @@ namespace BugTracker.Controllers
 
                 return RedirectToAction(nameof(HomeController.UserManager));
             }
+        }
+
+
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpGet]
+        public ActionResult CreateProject()
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpPost]
+        public ActionResult CreateProject(HomeProjectViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            Project project = new Project
+            {
+                Name = model.Name
+            };
+
+            DbContext.Projects.Add(project);
+
+            DbContext.SaveChanges();
+
+            return RedirectToAction(nameof(HomeController.AllProjects));
+        }
+
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpGet]
+        public ActionResult AllProjects()
+        {
+            List<HomeProjectViewModel> projects = DbContext.Projects.Select(p =>
+                new HomeProjectViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated,
+                    Users = p.Users,
+                    Tickets = p.Tickets
+                }).ToList();
+
+            return View(projects);
+        }
+
+        [HttpGet]
+        public ActionResult MyProjects()
+        {
+            string userId = User.Identity.GetUserId();
+            List<HomeProjectViewModel> projects = DbContext.Projects.Where(p => p.Users.Any(x => x.Id == userId)).Select(p =>
+                new HomeProjectViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated,
+                    Users = p.Users,
+                    Tickets = p.Tickets
+                }).ToList();
+
+            return View(projects);
         }
     }
 }
