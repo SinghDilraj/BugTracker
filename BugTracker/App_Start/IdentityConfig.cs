@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using BugTracker.Models;
+using Blog.Models.Extensions;
 
 namespace BugTracker
 {
@@ -19,6 +20,8 @@ namespace BugTracker
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            MyEmailService myEmailService = new MyEmailService();
+            myEmailService.Send(message.Destination, message.Subject, message.Body);
             return Task.FromResult(0);
         }
     }
