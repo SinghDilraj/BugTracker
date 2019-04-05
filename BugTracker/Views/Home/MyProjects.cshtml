@@ -45,17 +45,16 @@
                             <td>@project.Name</td>
                             <td>@project.Users.Count</td>
                             <td>@project.Tickets.Count</td>
-                            <td>@project.DateCreated.ToString()</td>
-                            <td>
-                                @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
-                                {
-                                    <i>never</i>
-                                }
-                                else
-                                {
-                                    project.DateUpdated.ToString();
-                                }
-                            </td>
+                            <td>@project.DateCreated</td>
+
+                            @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
+                            {
+                                <td>never</td>
+                            }
+                            else
+                            {
+                                <td>@project.DateUpdated</td>
+                            }
                         </tr>
                     }
                 </tbody>

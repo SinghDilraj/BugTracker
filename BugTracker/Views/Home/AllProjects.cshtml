@@ -51,20 +51,19 @@
                             <td>@project.Name</td>
                             <td>@project.Users.Count()</td>
                             <td>@project.Tickets.Count()</td>
-                            <td>@project.DateCreated.ToString()</td>
-                            <td>
-                                @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
-                                {
-                                    <i>never</i>
-                                }
-                                else
-                                {
-                                    project.DateUpdated.ToString();
-                                }
-                            </td>
+                            <td>@project.DateCreated</td>
+
+                            @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
+                            {
+                                <td>never</td>
+                            }
+                            else
+                            {
+                                <td>@project.DateUpdated</td>
+                            }
                             <td><a href="@Url.Action("EditProject", "Home", new {id = project.Id})"><i class="fa fa-wrench ml-3"></i></a></td>
                             <td><a href="@Url.Action("DeleteProject", "Home", new {id = project.Id})"><i class="fa fa-trash ml-4"></i></a></td>
-                            <td><a href="@Url.Action("AssignProject", "Home", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
+                            <td><a href="@Url.Action("AllUsers", "Home", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
                         </tr>
                     }
                 </tbody>

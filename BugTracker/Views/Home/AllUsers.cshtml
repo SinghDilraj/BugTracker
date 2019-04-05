@@ -1,0 +1,57 @@
+﻿@model AssignProjectMembersViewModel
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("AllUsers", "Home")">Assign Project</a>
+    </li>
+</ol>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-users"></i>
+        User List
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped display">
+                <thead>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <th>
+                                @user.Email
+                            </th>
+
+                            <th>
+
+                                @if (user.Projects.Any(p => p.Id == Model.Id))
+                                {
+                                    using (Html.BeginForm("AssignProject", "Home", new { projectId = Model.Id, userId = user.Id, add = false }, FormMethod.Post))
+                                    {
+                                        <div class="text-center">
+                                            <button class="text-danger" type="submit">
+                                                <i class="fa fa-ban"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("AssignProject", "Home", new { projectId = Model.Id, userId = user.Id, add = true }, FormMethod.Post))
+                                    {
+                                        <div class="text-center">
+                                            <button class="text-success mr-auto ml-auto" type="submit">
+                                                <i class="fa fa-user-plus"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                            </th>
+                        </tr>
+                    }
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
