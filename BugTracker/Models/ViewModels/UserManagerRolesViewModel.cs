@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BugTracker.Models
+namespace BugTracker.ViewModels.Models
 {
     public class UserManagerRolesViewModel
     {

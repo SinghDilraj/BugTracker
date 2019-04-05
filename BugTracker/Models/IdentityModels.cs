@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BugTracker.Models.Classes;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -11,6 +12,14 @@ namespace BugTracker.Models
     public class ApplicationUser : IdentityUser
     {
         public string DisplayName { get; set; }
+        public virtual List<Project> Projects { get; set; }
+        public virtual List<Ticket> Tickets { get; set; }
+
+        public ApplicationUser()
+        {
+            Projects = new List<Project>();
+            Tickets = new List<Ticket>();
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
