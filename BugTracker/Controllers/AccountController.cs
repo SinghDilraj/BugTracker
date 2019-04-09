@@ -169,9 +169,10 @@ namespace BugTracker.Controllers
             {
                 ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, DisplayName = model.DisplayName };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                UserManager.AddToRole(user.Id, "Submitter");
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, "Submitter");
+
                     //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
