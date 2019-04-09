@@ -10,9 +10,9 @@ namespace BugTracker.Models.Classes
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Type { get; set; }
-        public string Priority { get; set; }
-        public string Status { get; set; }
+        public TicketType Type { get; set; }
+        public TicketPriority Priority { get; set; }
+        public TicketStatus Status { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
         public virtual ApplicationUser CreatedBy { get; set; }

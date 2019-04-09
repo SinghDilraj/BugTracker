@@ -7,6 +7,7 @@ namespace BugTracker.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using BugTracker.Models.Classes;
 
     internal sealed class Configuration : DbMigrationsConfiguration<BugTracker.Models.ApplicationDbContext>
     {
@@ -85,6 +86,17 @@ namespace BugTracker.Migrations
             {
                 userManager.AddToRole(admin.Id, "Admin");
             }
+
+            //Seeding Ticket Types, Priorities and Statuses.
+
+            //Tickets
+            context.TicketTypes.AddOrUpdate(p => p.Name, new TicketType(){ Name = "Bug" }, new TicketType() { Name = "Feature" }, new TicketType() { Name = "Database" }, new TicketType() { Name = "Support" });
+
+            //Priorities
+            context.TicketPriorities.AddOrUpdate(p => p.Name, new TicketPriority() { Name = "Low" }, new TicketPriority() { Name = "Medium" }, new TicketPriority() { Name = "High" });
+
+            //Statuses
+            context.TicketStatuses.AddOrUpdate(p => p.Name, new TicketStatus() { Name = "Open" }, new TicketStatus() { Name = "Resolved" }, new TicketStatus() { Name = "Rejected" });
         }
     }
 }

@@ -47,41 +47,13 @@ namespace BugTracker.Controllers
             }
             else
             {
-                if (DefaultUserManager.IsInRole(id, "Admin"))
-                {
-                    model.Admin = true;
-                }
-                else
-                {
-                    model.Admin = false;
-                }
+                model.Admin = DefaultUserManager.IsInRole(id, "Admin") ? true : false;
 
-                if (DefaultUserManager.IsInRole(id, "Project Manager"))
-                {
-                    model.ProjectManager = true;
-                }
-                else
-                {
-                    model.ProjectManager = false;
-                }
+                model.ProjectManager = DefaultUserManager.IsInRole(id, "Project Manager") ? true : false;
 
-                if (DefaultUserManager.IsInRole(id, "Developer"))
-                {
-                    model.Developer = true;
-                }
-                else
-                {
-                    model.Developer = false;
-                }
+                model.Developer = DefaultUserManager.IsInRole(id, "Developer") ? true : false;
 
-                if (DefaultUserManager.IsInRole(id, "Submitter"))
-                {
-                    model.Submitter = true;
-                }
-                else
-                {
-                    model.Submitter = false;
-                }
+                model.Submitter = DefaultUserManager.IsInRole(id, "Submitter") ? true : false;
 
                 model.Id = id;
 
