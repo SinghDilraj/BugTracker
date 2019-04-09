@@ -11,7 +11,7 @@
         <form method="post">
             <div class="form-group">
                 @Html.LabelFor(p => p.Name, "Project Name")
-                @Html.TextBoxFor(p => p.Name, new { @class = "form-control", type = "text" })
+                @Html.TextBoxFor(p => p.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(p => p.Name)
             </div>
             <div class="form-group">

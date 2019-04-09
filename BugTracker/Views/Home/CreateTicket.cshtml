@@ -7,3 +7,37 @@
     </li>
 </ol>
 
+<div class="container">
+    <div class="row">
+        <form method="post">
+            <div class="form-group">
+                @Html.LabelFor(p => p.Title, new { @class = "form-control" })
+                @Html.TextBoxFor(p => p.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Title)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.Description, new { @class = "form-control" })
+                @Html.TextBoxFor(p => p.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Description)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.ProjectId, "Project")
+                @Html.DropDownListFor(p => p.ProjectId, (List<SelectListItem>)ViewData["projects"], "Project", new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.ProjectId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.TypeId, "Type")
+                @Html.DropDownListFor(p => p.TypeId, (List<SelectListItem>)ViewData["types"], "Type", new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.TypeId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(p => p.PriorityId, "Priority")
+                @Html.DropDownListFor(p => p.PriorityId, (List<SelectListItem>)ViewData["priorities"], "Priority", new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.PriorityId)
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>

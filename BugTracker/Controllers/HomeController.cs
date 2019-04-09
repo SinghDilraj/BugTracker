@@ -313,6 +313,50 @@ namespace BugTracker.Controllers
             {
                 CreateTicketViewModel model = new CreateTicketViewModel();
 
+                List<Project> projects = DbContext.Projects
+                    .Where(p => p.Users.Any(q => q.Id == userId))
+                    .Select(p => p)
+                    .ToList();
+
+                List<SelectListItem> projectList = new List<SelectListItem>();
+
+                foreach (Project project in projects)
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = project.Name,
+                        Value = project.Id.ToString()
+                    };
+                }
+
+                ViewData["projects"] = projectList;
+
+                List<SelectListItem> typeList = new List<SelectListItem>();
+
+                foreach (TicketType type in DbContext.TicketTypes.Select(p => p))
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = type.Name,
+                        Value = type.Id.ToString()
+                    };
+                }
+
+                ViewData["types"] = typeList;
+
+                List<SelectListItem> priorityList = new List<SelectListItem>();
+
+                foreach (TicketPriority priority in DbContext.TicketPriorities.Select(p => p))
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = priority.Name,
+                        Value = priority.Id.ToString()
+                    };
+                }
+
+                ViewData["priorities"] = priorityList;
+
                 return View(model);
             }
         }
