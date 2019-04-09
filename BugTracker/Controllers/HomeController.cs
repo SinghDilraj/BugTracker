@@ -300,5 +300,74 @@ namespace BugTracker.Controllers
 
             return View(projects);
         }
+
+        [Authorize(Roles = "Submitter")]
+        [HttpGet]
+        public ActionResult CreateTicket(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                CreateTicketViewModel model = new CreateTicketViewModel();
+
+                return View(model);
+            }
+        }
+
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpGet]
+        public ActionResult AllTickets()
+        {
+            List<TicketViewModel> model = DbContext.Tickets
+                .Select(p => new TicketViewModel
+                {
+
+                }).ToList();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ProjectTickets(int? projectId)
+        {
+            if (!projectId.HasValue)
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                List<TicketViewModel> model = DbContext.Tickets
+                    .Where(p => p.Project.Id == projectId)
+                    .Select(p => new TicketViewModel
+                    {
+
+                    }).ToList();
+
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult MyTickets(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                List<TicketViewModel> model = DbContext.Tickets
+                    .Where(p => p.AssignedTo.Id == userId)
+                    .Select(p => new TicketViewModel
+                    {
+
+                    }).ToList();
+
+                return View(model);
+            }
+        }
     }
 }
