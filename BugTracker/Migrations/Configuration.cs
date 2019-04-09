@@ -97,6 +97,8 @@ namespace BugTracker.Migrations
 
             //Statuses
             context.TicketStatuses.AddOrUpdate(p => p.Name, new TicketStatus() { Name = "Open" }, new TicketStatus() { Name = "Resolved" }, new TicketStatus() { Name = "Rejected" });
+
+            context.SaveChanges();
         }
     }
 }

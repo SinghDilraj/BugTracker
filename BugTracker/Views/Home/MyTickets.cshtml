@@ -2,14 +2,14 @@
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="@Url.Action("AllTickets", "Home")">All Tickets</a>
+        <a href="@Url.Action("MyTickets", "Home")">My Tickets</a>
     </li>
 </ol>
 
 <div class="card mb-3">
     <div class="card-header">
         <i class="fas fa-credit-card"></i>
-        All Tickets
+        My Tickets
     </div>
 
     <div class="card-body">
@@ -44,25 +44,25 @@
                 <tbody class="text-primary">
                     @foreach (var ticket in Model)
                     {
-                    <tr>
-                        <td>@ticket.Title</td>
-                        <td>@ticket.DateCreated</td>
+                        <tr>
+                            <td>@ticket.Title</td>
+                            <td>@ticket.DateCreated</td>
 
-                        @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))
-                        {
-                            <td>never</td>
-                        }
-                        else
-                        {
-                            <td>@ticket.DateUpdated</td>
-                        }
-                        <td>@ticket.ProjectName</td>
-                        <td>@ticket.CreatedByName</td>
-                        <td>@ticket.AssignedToName</td>
-                        <td>@ticket.Type</td>
-                        <td>@ticket.Priority</td>
-                        <td>@ticket.Status</td>
-                    </tr>
+                            @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))
+                            {
+                                <td>never</td>
+                            }
+                            else
+                            {
+                                <td>@ticket.DateUpdated</td>
+                            }
+                            <td>@ticket.ProjectName</td>
+                            <td>@ticket.CreatedByName</td>
+                            <td>@ticket.AssignedToName</td>
+                            <td>@ticket.Type</td>
+                            <td>@ticket.Priority</td>
+                            <td>@ticket.Status</td>
+                        </tr>
                     }
                 </tbody>
             </table>

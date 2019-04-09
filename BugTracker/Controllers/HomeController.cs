@@ -303,8 +303,10 @@ namespace BugTracker.Controllers
 
         [Authorize(Roles = "Submitter")]
         [HttpGet]
-        public ActionResult CreateTicket(string userId)
+        public ActionResult CreateTicket()
         {
+            string userId = User.Identity.GetUserId();
+
             if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction(nameof(HomeController.Index));
@@ -327,6 +329,8 @@ namespace BugTracker.Controllers
                         Text = project.Name,
                         Value = project.Id.ToString()
                     };
+
+                    projectList.Add(item);
                 }
 
                 ViewData["projects"] = projectList;
@@ -340,6 +344,8 @@ namespace BugTracker.Controllers
                         Text = type.Name,
                         Value = type.Id.ToString()
                     };
+
+                    typeList.Add(item);
                 }
 
                 ViewData["types"] = typeList;
@@ -353,6 +359,8 @@ namespace BugTracker.Controllers
                         Text = priority.Name,
                         Value = priority.Id.ToString()
                     };
+
+                    priorityList.Add(item);
                 }
 
                 ViewData["priorities"] = priorityList;
@@ -361,55 +369,137 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
-        [HttpGet]
-        public ActionResult AllTickets()
+        [Authorize(Roles = "Submitter")]
+        [HttpPost]
+        public ActionResult CreateTicket(CreateTicketViewModel model)
         {
-            List<TicketViewModel> model = DbContext.Tickets
-                .Select(p => new TicketViewModel
-                {
+            string userId = User.Identity.GetUserId();
 
-                }).ToList();
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public ActionResult ProjectTickets(int? projectId)
-        {
-            if (!projectId.HasValue)
-            {
-                return RedirectToAction(nameof(HomeController.Index));
-            }
-            else
-            {
-                List<TicketViewModel> model = DbContext.Tickets
-                    .Where(p => p.Project.Id == projectId)
-                    .Select(p => new TicketViewModel
-                    {
-
-                    }).ToList();
-
-                return View(model);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult MyTickets(string userId)
-        {
             if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction(nameof(HomeController.Index));
             }
             else
             {
-                List<TicketViewModel> model = DbContext.Tickets
+                int projectId = Convert.ToInt32(model.ProjectId);
+                int priorityId = Convert.ToInt32(model.PriorityId);
+                int typeId = Convert.ToInt32(model.TypeId);
+
+                Ticket ticket = new Ticket()
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Project = DbContext.Projects.Where(p => p.Id == projectId).FirstOrDefault(),
+                    Priority = DbContext.TicketPriorities.Where(p => p.Id == priorityId).FirstOrDefault(),
+                    Type = DbContext.TicketTypes.Where(p => p.Id == typeId).FirstOrDefault(),
+                    Status = DbContext.TicketStatuses.Where(p => p.Name == "Open").FirstOrDefault(),
+                    CreatedBy = DefaultUserManager.FindById(User.Identity.GetUserId())
+                };
+
+                DbContext.Tickets.Add(ticket);
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction(nameof(HomeController.MyTickets));
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AllTickets()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                List<TicketViewModel> model = User.IsInRole("Submitter") || User.IsInRole("Developer")
+                    ? DbContext.Tickets
+                            .Where(p => p.Project.Users.Any(q => q.Id == userId))
+                            .Select(p => new TicketViewModel
+                            {
+                                Title = p.Title,
+                                Description = p.Description,
+                                DateCreated = p.DateCreated,
+                                DateUpdated = p.DateUpdated,
+                                ProjectName = p.Project.Name,
+                                Type = p.Type.Name,
+                                Priority = p.Priority.Name,
+                                Status = p.Status.Name,
+                                CreatedByName = p.CreatedBy.DisplayName,
+                                AssignedToName = p.AssignedTo.DisplayName
+                            }).ToList()
+                    : DbContext.Tickets
+                            .Select(p => new TicketViewModel
+                            {
+                                Title = p.Title,
+                                Description = p.Description,
+                                DateCreated = p.DateCreated,
+                                DateUpdated = p.DateUpdated,
+                                ProjectName = p.Project.Name,
+                                Type = p.Type.Name,
+                                Priority = p.Priority.Name,
+                                Status = p.Status.Name,
+                                CreatedByName = p.CreatedBy.DisplayName,
+                                AssignedToName = p.AssignedTo.DisplayName
+                            }).ToList();
+                return View(model);
+            }
+        }
+
+        [Authorize(Roles = "Submitter, Developer")]
+        [HttpGet]
+        public ActionResult MyTickets()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                List<TicketViewModel> model;
+
+                if (User.IsInRole("Submitter"))
+                {
+                    model = DbContext.Tickets
+                    .Where(p => p.CreatedBy.Id == userId)
+                    .Select(p => new TicketViewModel
+                    {
+                        Title = p.Title,
+                        Description = p.Description,
+                        DateCreated = p.DateCreated,
+                        DateUpdated = p.DateUpdated,
+                        ProjectName = p.Project.Name,
+                        Type = p.Type.Name,
+                        Priority = p.Priority.Name,
+                        Status = p.Status.Name,
+                        CreatedByName = p.CreatedBy.DisplayName,
+                        AssignedToName = p.AssignedTo.DisplayName
+                    }).ToList();
+                }
+                else
+                {
+                    model = DbContext.Tickets
                     .Where(p => p.AssignedTo.Id == userId)
                     .Select(p => new TicketViewModel
                     {
-
+                        Title = p.Title,
+                        Description = p.Description,
+                        DateCreated = p.DateCreated,
+                        DateUpdated = p.DateUpdated,
+                        ProjectName = p.Project.Name,
+                        Type = p.Type.Name,
+                        Priority = p.Priority.Name,
+                        Status = p.Status.Name,
+                        CreatedByName = p.CreatedBy.DisplayName,
+                        AssignedToName = p.AssignedTo.DisplayName
                     }).ToList();
-
+                }
+                
                 return View(model);
             }
         }
