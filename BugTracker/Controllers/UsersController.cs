@@ -11,22 +11,24 @@ using System.Web.Mvc;
 namespace BugTracker.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class UsersController : Controller
     {
         private ApplicationDbContext DbContext;
 
         private UserManager<ApplicationUser> DefaultUserManager;
 
-        public HomeController()
+        public UsersController()
         {
             DbContext = new ApplicationDbContext();
 
             DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
 
-        public ActionResult Index()
+        [Authorize(Roles = "Admin")]
+        public ActionResult UserManager()
         {
-            return View();
+            List<ApplicationUser> users = DbContext.Users.Select(p => p).ToList();
+            return View(users);
         }
     }
 }
