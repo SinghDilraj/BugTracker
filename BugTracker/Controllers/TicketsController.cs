@@ -123,7 +123,7 @@ namespace BugTracker.Controllers
 
                 DbContext.SaveChanges();
 
-                return RedirectToAction(nameof(HomeController.MyTickets));
+                return RedirectToAction(nameof(TicketsController.MyTickets));
             }
         }
 

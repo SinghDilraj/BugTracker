@@ -1752,7 +1752,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\UserManager.cshtml" />
+    <Content Include="Views\Users\UserManager.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -1777,7 +1777,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -1800,16 +1799,16 @@
     <Content Include="vendor\fontawesome-free\webfonts\fa-solid-900.woff" />
     <Content Include="vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Views\Manage\ChangeDisplayName.cshtml" />
-    <Content Include="Views\Home\_Roles.cshtml" />
+    <Content Include="Views\Roles\_Roles.cshtml" />
     <Content Include="Views\Account\EmailConfirm.cshtml" />
-    <Content Include="Views\Home\AllProjects.cshtml" />
-    <Content Include="Views\Home\MyProjects.cshtml" />
-    <Content Include="Views\Home\CreateProject.cshtml" />
-    <Content Include="Views\Home\EditProject.cshtml" />
-    <Content Include="Views\Home\AllUsers.cshtml" />
-    <Content Include="Views\Home\AllTickets.cshtml" />
-    <Content Include="Views\Home\CreateTicket.cshtml" />
-    <Content Include="Views\Home\MyTickets.cshtml" />
+    <Content Include="Views\Projects\AllProjects.cshtml" />
+    <Content Include="Views\Projects\MyProjects.cshtml" />
+    <Content Include="Views\Projects\CreateProject.cshtml" />
+    <Content Include="Views\Projects\EditProject.cshtml" />
+    <Content Include="Views\Projects\AllUsers.cshtml" />
+    <Content Include="Views\Tickets\AllTickets.cshtml" />
+    <Content Include="Views\Tickets\CreateTicket.cshtml" />
+    <Content Include="Views\Tickets\MyTickets.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

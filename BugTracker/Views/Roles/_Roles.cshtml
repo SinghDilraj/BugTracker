@@ -1,6 +1,6 @@
 ﻿@model UserManagerRolesViewModel
 
-@using (Html.BeginForm("Roles", "Home", new { id = Model.Id }, FormMethod.Post, new { type = "submit" }))
+@using (Html.BeginForm("Roles", "Roles", new { id = Model.Id }, FormMethod.Post, new { type = "submit" }))
 {
     <td>
         @if (Model.Admin)

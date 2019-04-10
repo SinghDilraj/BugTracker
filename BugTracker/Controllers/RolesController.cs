@@ -95,7 +95,7 @@ namespace BugTracker.Controllers
                     DefaultUserManager.RemoveFromRole(id, "Submitter");
                 }
 
-                return RedirectToAction(nameof(HomeController.UserManager));
+                return RedirectToAction(nameof(UsersController.UserManager));
             }
         }
     }

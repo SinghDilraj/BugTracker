@@ -51,7 +51,7 @@ namespace BugTracker.Controllers
 
             DbContext.SaveChanges();
 
-            return RedirectToAction(nameof(HomeController.AllProjects));
+            return RedirectToAction(nameof(ProjectsController.AllProjects));
         }
 
         [Authorize(Roles = "Admin, Project Manager")]
@@ -78,7 +78,7 @@ namespace BugTracker.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
 
             HomeProjectViewModel project = DbContext.Projects
@@ -97,7 +97,7 @@ namespace BugTracker.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
 
             if (!ModelState.IsValid)
@@ -110,7 +110,7 @@ namespace BugTracker.Controllers
 
             if (project == null)
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
 
             project.Name = model.Name;
@@ -118,7 +118,7 @@ namespace BugTracker.Controllers
 
             DbContext.SaveChanges();
 
-            return RedirectToAction(nameof(HomeController.AllProjects));
+            return RedirectToAction(nameof(ProjectsController.AllProjects));
         }
 
         [Authorize(Roles = "Admin, Project Manager")]
@@ -126,7 +126,7 @@ namespace BugTracker.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
 
             Project project = DbContext.Projects
@@ -134,14 +134,14 @@ namespace BugTracker.Controllers
 
             if (project == null)
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
 
             DbContext.Projects.Remove(project);
 
             DbContext.SaveChanges();
 
-            return RedirectToAction(nameof(HomeController.AllProjects));
+            return RedirectToAction(nameof(ProjectsController.AllProjects));
         }
 
         [Authorize(Roles = "Admin, Project Manager")]
@@ -150,7 +150,7 @@ namespace BugTracker.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
             else
             {
@@ -167,7 +167,7 @@ namespace BugTracker.Controllers
         {
             if (!projectId.HasValue || string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction(nameof(HomeController.AllProjects));
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
             }
             else
             {
@@ -188,7 +188,7 @@ namespace BugTracker.Controllers
 
                 DbContext.SaveChanges();
 
-                return RedirectToAction(nameof(HomeController.AllUsers));
+                return RedirectToAction(nameof(ProjectsController.AllUsers));
             }
         }
 

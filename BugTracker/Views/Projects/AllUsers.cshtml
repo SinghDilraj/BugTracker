@@ -3,7 +3,7 @@
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="@Url.Action("AllUsers", "Home")">Assign Project</a>
+        <a href="@Url.Action("AllUsers", "Projects")">Assign Project</a>
     </li>
 </ol>
 
@@ -27,7 +27,7 @@
 
                                 @if (user.Projects.Any(p => p.Id == Model.Id))
                                 {
-                                    using (Html.BeginForm("AssignProject", "Home", new { projectId = Model.Id, userId = user.Id, add = false }, FormMethod.Post))
+                                    using (Html.BeginForm("AssignProject", "Projects", new { projectId = Model.Id, userId = user.Id, add = false }, FormMethod.Post))
                                     {
                                         <div class="text-center">
                                             <button class="text-danger" type="submit">
@@ -38,7 +38,7 @@
                                 }
                                 else
                                 {
-                                    using (Html.BeginForm("AssignProject", "Home", new { projectId = Model.Id, userId = user.Id, add = true }, FormMethod.Post))
+                                    using (Html.BeginForm("AssignProject", "Projects", new { projectId = Model.Id, userId = user.Id, add = true }, FormMethod.Post))
                                     {
                                         <div class="text-center">
                                             <button class="text-success mr-auto ml-auto" type="submit">
