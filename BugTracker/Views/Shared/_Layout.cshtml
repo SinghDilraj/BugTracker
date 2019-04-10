@@ -96,7 +96,7 @@
             @if (User.IsInRole("Admin"))
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("UserManager", "Home")">
+                    <a class="nav-link" href="@Url.Action("UserManager", "Users")">
                         <i class="fas fa-fw fa-users"></i>
                         <span>User Manager</span>
                     </a>
@@ -106,7 +106,7 @@
             @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("AllProjects", "Home")">
+                    <a class="nav-link" href="@Url.Action("AllProjects", "Projects")">
                         <i class="fas fa-users"> <i class="fas fa-fw fa-archive"></i></i>
                         <span>All Projects</span>
                     </a>
@@ -114,7 +114,7 @@
             }
 
             <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("MyProjects", "Home")">
+                <a class="nav-link" href="@Url.Action("MyProjects", "Projects")">
                     <i class="fas fa-user"> <i class="fas fa-fw fa-archive"></i></i>
                     <span>My Projects</span>
                 </a>
@@ -123,7 +123,7 @@
             @if (User.IsInRole("Submitter"))
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("CreateTicket", "Home", new { userId = User.Identity.GetUserId()})">
+                    <a class="nav-link" href="@Url.Action("CreateTicket", "Tickets", new { userId = User.Identity.GetUserId()})">
                         <i class="fas fa-plus"> <i class="fas fa-fw fa-credit-card"></i></i>
                         <span>Create Ticket</span>
                     </a>
@@ -131,7 +131,7 @@
             }
 
             <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("AllTickets", "Home")">
+                <a class="nav-link" href="@Url.Action("AllTickets", "Tickets")">
                     <i class="fas fa-users"> <i class="fas fa-fw fa-credit-card"></i></i>
                     <span>All Tickets</span>
                 </a>
@@ -140,7 +140,7 @@
             @if (User.IsInRole("Developer") || User.IsInRole("Submitter"))
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("MyTickets", "Home")">
+                    <a class="nav-link" href="@Url.Action("MyTickets", "Tickets")">
                         <i class="fas fa-user"> <i class="fas fa-fw fa-credit-card"></i></i>
                         <span>My Tickets</span>
                     </a>
