@@ -1,9 +1,7 @@
 ﻿using BugTracker.Models;
-using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -27,7 +25,14 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult UserManager()
         {
-            List<ApplicationUser> users = DbContext.Users.Select(p => p).ToList();
+            List<UserViewModel> users = DbContext.Users
+                .Select(p => new UserViewModel
+                {
+                    Id = p.Id,
+                    DisplayName = p.DisplayName,
+                    Email = p.Email
+                }).ToList();
+
             return View(users);
         }
     }
