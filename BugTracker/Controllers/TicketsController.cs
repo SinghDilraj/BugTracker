@@ -127,6 +127,133 @@ namespace BugTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpGet]
+        public ActionResult EditTicket(int? ticketId)
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (!ticketId.HasValue && string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+            else
+            {
+                CreateTicketViewModel model = DbContext.Tickets
+                    .Where(p => p.Id == ticketId)
+                    .Select(p => new CreateTicketViewModel
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Description = p.Description,
+                        Project = p.Project,
+                        Type = p.Type,
+                        Priority = p.Priority,
+                        Status = p.Status,
+                        DateUpdated = DateTime.Now,
+                        AssignedTo = p.AssignedTo,
+                    }).FirstOrDefault();
+
+                List<Project> projects = DbContext.Projects
+                    //.Where(p => p.Users.Any(q => q.Id == userId))
+                    .Select(p => p)
+                    .ToList();
+
+                List<SelectListItem> projectList = new List<SelectListItem>();
+
+                foreach (Project project in projects)
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = project.Name,
+                        Value = project.Id.ToString()
+                    };
+
+                    projectList.Add(item);
+                }
+
+                ViewData["projects"] = projectList;
+
+                List<SelectListItem> typeList = new List<SelectListItem>();
+
+                foreach (TicketType type in DbContext.TicketTypes.Select(p => p))
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = type.Name,
+                        Value = type.Id.ToString()
+                    };
+
+                    typeList.Add(item);
+                }
+
+                ViewData["types"] = typeList;
+
+                List<SelectListItem> priorityList = new List<SelectListItem>();
+
+                foreach (TicketPriority priority in DbContext.TicketPriorities.Select(p => p))
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = priority.Name,
+                        Value = priority.Id.ToString()
+                    };
+
+                    priorityList.Add(item);
+                }
+
+                ViewData["priorities"] = priorityList;
+
+                List<SelectListItem> statusList = new List<SelectListItem>();
+
+                foreach (TicketStatus status in DbContext.TicketStatuses.Select(p => p))
+                {
+                    SelectListItem item = new SelectListItem
+                    {
+                        Text = status.Name,
+                        Value = status.Id.ToString()
+                    };
+
+                    statusList.Add(item);
+                }
+
+                ViewData["statuses"] = statusList;
+
+                return View(model);
+            }
+        }
+
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpPost]
+        public ActionResult EditTicket(CreateTicketViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+            else
+            {
+                Ticket ticket = DbContext.Tickets
+                    .Where(p => p.Id == model.Id)
+                    .Select(p => p)
+                    .FirstOrDefault();
+
+                ticket.Title = model.Title;
+                ticket.Description = model.Description;
+                ticket.Project = model.Project;
+                ticket.Type = model.Type;
+                ticket.Priority = model.Priority;
+                ticket.Status = model.Status;
+                ticket.DateUpdated = model.DateUpdated;
+
+                DbContext.Tickets.Add(ticket);
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+        }
+
         [HttpGet]
         public ActionResult AllTickets()
         {
@@ -138,33 +265,35 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<TicketViewModel> model = User.IsInRole("Submitter") || User.IsInRole("Developer")
+                List<CreateTicketViewModel> model = User.IsInRole("Submitter") || User.IsInRole("Developer")
                     ? DbContext.Tickets
                             .Where(p => p.Project.Users.Any(q => q.Id == userId))
-                            .Select(p => new TicketViewModel
+                            .Select(p => new CreateTicketViewModel
                             {
+                                Id = p.Id,
                                 Title = p.Title,
                                 Description = p.Description,
                                 DateCreated = p.DateCreated,
                                 DateUpdated = p.DateUpdated,
                                 ProjectName = p.Project.Name,
-                                Type = p.Type.Name,
-                                Priority = p.Priority.Name,
-                                Status = p.Status.Name,
+                                TypeName = p.Type.Name,
+                                PriorityName = p.Priority.Name,
+                                StatusName = p.Status.Name,
                                 CreatedByName = p.CreatedBy.DisplayName,
                                 AssignedToName = p.AssignedTo.DisplayName
                             }).ToList()
                     : DbContext.Tickets
-                            .Select(p => new TicketViewModel
+                            .Select(p => new CreateTicketViewModel
                             {
+                                Id = p.Id,
                                 Title = p.Title,
                                 Description = p.Description,
                                 DateCreated = p.DateCreated,
                                 DateUpdated = p.DateUpdated,
                                 ProjectName = p.Project.Name,
-                                Type = p.Type.Name,
-                                Priority = p.Priority.Name,
-                                Status = p.Status.Name,
+                                TypeName = p.Type.Name,
+                                PriorityName = p.Priority.Name,
+                                StatusName = p.Status.Name,
                                 CreatedByName = p.CreatedBy.DisplayName,
                                 AssignedToName = p.AssignedTo.DisplayName
                             }).ToList();
@@ -184,34 +313,36 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<TicketViewModel> model = User.IsInRole("Submitter")
+                List<CreateTicketViewModel> model = User.IsInRole("Submitter")
                     ? DbContext.Tickets
                     .Where(p => p.CreatedBy.Id == userId)
-                    .Select(p => new TicketViewModel
+                    .Select(p => new CreateTicketViewModel
                     {
+                        Id = p.Id,
                         Title = p.Title,
                         Description = p.Description,
                         DateCreated = p.DateCreated,
                         DateUpdated = p.DateUpdated,
                         ProjectName = p.Project.Name,
-                        Type = p.Type.Name,
-                        Priority = p.Priority.Name,
-                        Status = p.Status.Name,
+                        TypeName = p.Type.Name,
+                        PriorityName = p.Priority.Name,
+                        StatusName = p.Status.Name,
                         CreatedByName = p.CreatedBy.DisplayName,
                         AssignedToName = p.AssignedTo.DisplayName
                     }).ToList()
                     : DbContext.Tickets
                     .Where(p => p.AssignedTo.Id == userId)
-                    .Select(p => new TicketViewModel
+                    .Select(p => new CreateTicketViewModel
                     {
+                        Id = p.Id,
                         Title = p.Title,
                         Description = p.Description,
                         DateCreated = p.DateCreated,
                         DateUpdated = p.DateUpdated,
                         ProjectName = p.Project.Name,
-                        Type = p.Type.Name,
-                        Priority = p.Priority.Name,
-                        Status = p.Status.Name,
+                        TypeName = p.Type.Name,
+                        PriorityName = p.Priority.Name,
+                        StatusName = p.Status.Name,
                         CreatedByName = p.CreatedBy.DisplayName,
                         AssignedToName = p.AssignedTo.DisplayName
                     }).ToList();

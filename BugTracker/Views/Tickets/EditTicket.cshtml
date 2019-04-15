@@ -1,0 +1,50 @@
+﻿@model CreateTicketViewModel
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("EditTicket", "Tickets", new { userId = Model.Id})">Edit Ticket</a>
+    </li>
+</ol>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 ml-5">
+            <form method="post">
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Title)
+                    @Html.TextBoxFor(p => p.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Title)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Description)
+                    @Html.TextAreaFor(p => p.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Description)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.ProjectId, "Project")
+                    @Html.DropDownListFor(p => p.ProjectId, (List<SelectListItem>)ViewData["projects"], "Projects", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.ProjectId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.TypeId, "Type")
+                    @Html.DropDownListFor(p => p.TypeId, (List<SelectListItem>)ViewData["types"], new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.TypeId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.PriorityId, "Priority")
+                    @Html.DropDownListFor(p => p.PriorityId, (List<SelectListItem>)ViewData["priorities"], new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.PriorityId)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.StatusId, "Status")
+                    @Html.DropDownListFor(p => p.StatusId, (List<SelectListItem>)ViewData["statuses"], new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.StatusId)
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

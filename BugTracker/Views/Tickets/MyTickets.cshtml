@@ -1,4 +1,4 @@
-﻿@model List<TicketViewModel>
+﻿@model List<CreateTicketViewModel>
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -59,9 +59,9 @@
                             <td>@ticket.ProjectName</td>
                             <td>@ticket.CreatedByName</td>
                             <td>@ticket.AssignedToName</td>
-                            <td>@ticket.Type</td>
-                            <td>@ticket.Priority</td>
-                            <td>@ticket.Status</td>
+                            <td>@ticket.TypeName</td>
+                            <td>@ticket.PriorityName</td>
+                            <td>@ticket.StatusName</td>
                         </tr>
                     }
                 </tbody>

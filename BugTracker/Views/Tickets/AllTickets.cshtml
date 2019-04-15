@@ -1,4 +1,4 @@
-﻿@model List<TicketViewModel>
+﻿@model List<CreateTicketViewModel>
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -26,6 +26,10 @@
                         <th>Type</th>
                         <th>Priority</th>
                         <th>Status</th>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                        {
+                            <th>Edit/Del</th>
+                        }
                     </tr>
                 </thead>
                 <tfoot>
@@ -39,30 +43,41 @@
                         <th>Type</th>
                         <th>Priority</th>
                         <th>Status</th>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                        {
+                            <th>Edit/Del</th>
+                        }
                     </tr>
                 </tfoot>
                 <tbody class="text-primary">
                     @foreach (var ticket in Model)
                     {
-                    <tr>
-                        <td>@ticket.Title</td>
-                        <td>@ticket.DateCreated</td>
+                        <tr>
+                            <td>@ticket.Title</td>
+                            <td>@ticket.DateCreated</td>
 
-                        @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))
-                        {
-                            <td>never</td>
-                        }
-                        else
-                        {
-                            <td>@ticket.DateUpdated</td>
-                        }
-                        <td>@ticket.ProjectName</td>
-                        <td>@ticket.CreatedByName</td>
-                        <td>@ticket.AssignedToName</td>
-                        <td>@ticket.Type</td>
-                        <td>@ticket.Priority</td>
-                        <td>@ticket.Status</td>
-                    </tr>
+                            @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))
+                            {
+                                <td>never</td>
+                            }
+                            else
+                            {
+                                <td>@ticket.DateUpdated</td>
+                            }
+                            <td>@ticket.ProjectName</td>
+                            <td>@ticket.CreatedByName</td>
+                            <td>@ticket.AssignedToName</td>
+                            <td>@ticket.TypeName</td>
+                            <td>@ticket.PriorityName</td>
+                            <td>@ticket.StatusName</td>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                            {
+                                <td>
+                                    <a href="@Url.Action("EditTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-wrench"></i></a>
+                                    <a href="@Url.Action("DeleteTicket", "Tickets", new { })"><i class="fas fa-trash ml-4"></i></a>
+                                </td>
+                            }
+                        </tr>
                     }
                 </tbody>
             </table>
