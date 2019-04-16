@@ -32,7 +32,7 @@ namespace BugTracker.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
@@ -100,7 +100,7 @@ namespace BugTracker.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
@@ -269,6 +269,37 @@ namespace BugTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Project Manager")]
+        [HttpPost]
+        public ActionResult AssignTicket(int? TicketId, string userId, bool add)
+        {
+            if (!TicketId.HasValue || string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+            else
+            {
+                Ticket ticket = DbContext.Tickets
+                    .FirstOrDefault(p => p.Id == TicketId);
+
+                ApplicationUser user = DbContext.Users
+                .FirstOrDefault(p => p.Id == userId);
+
+                if (add)
+                {
+                    ticket.AssignedTo = user;
+                }
+                else
+                {
+                    ticket.AssignedTo = null;
+                }
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction(nameof(UsersController.AllUsersForTickets), "Users");
+            }
+        }
+
         [HttpGet]
         public ActionResult AllTickets()
         {
@@ -276,7 +307,7 @@ namespace BugTracker.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
@@ -324,7 +355,7 @@ namespace BugTracker.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {

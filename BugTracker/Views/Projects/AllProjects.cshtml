@@ -63,7 +63,7 @@
                             }
                             <td><a href="@Url.Action("EditProject", "Projects", new {id = project.Id})"><i class="fa fa-wrench ml-3"></i></a></td>
                             <td><a href="@Url.Action("DeleteProject", "Projects", new {id = project.Id})"><i class="fa fa-trash ml-4"></i></a></td>
-                            <td><a href="@Url.Action("AllUsers", "Projects", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
+                            <td><a href="@Url.Action("AllUsersForProjects", "Users", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
                         </tr>
                     }
                 </tbody>

@@ -30,7 +30,7 @@ namespace BugTracker.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
@@ -55,7 +55,7 @@ namespace BugTracker.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
@@ -95,7 +95,7 @@ namespace BugTracker.Controllers
                     DefaultUserManager.RemoveFromRole(id, "Submitter");
                 }
 
-                return RedirectToAction(nameof(UsersController.UserManager));
+                return RedirectToAction(nameof(UsersController.UserManager), "Users");
             }
         }
     }

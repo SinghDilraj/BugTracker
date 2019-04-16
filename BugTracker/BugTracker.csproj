@@ -1806,11 +1806,12 @@
     <Content Include="Views\Projects\MyProjects.cshtml" />
     <Content Include="Views\Projects\CreateProject.cshtml" />
     <Content Include="Views\Projects\EditProject.cshtml" />
-    <Content Include="Views\Projects\AllUsers.cshtml" />
+    <Content Include="Views\Users\AllUsersForTickets.cshtml" />
     <Content Include="Views\Tickets\AllTickets.cshtml" />
     <Content Include="Views\Tickets\CreateTicket.cshtml" />
     <Content Include="Views\Tickets\MyTickets.cshtml" />
     <Content Include="Views\Tickets\EditTicket.cshtml" />
+    <Content Include="Views\Users\AllUsersForProjects.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

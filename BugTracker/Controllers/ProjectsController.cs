@@ -145,23 +145,6 @@ namespace BugTracker.Controllers
         }
 
         [Authorize(Roles = "Admin, Project Manager")]
-        [HttpGet]
-        public ActionResult AllUsers(AssignProjectMembersViewModel model, int? id)
-        {
-            if (!id.HasValue)
-            {
-                return RedirectToAction(nameof(ProjectsController.AllProjects));
-            }
-            else
-            {
-                model.Id = id;
-                model.Users = DbContext.Users.ToList();
-
-                return View(model);
-            }
-        }
-
-        [Authorize(Roles = "Admin, Project Manager")]
         [HttpPost]
         public ActionResult AssignProject(int? projectId, string userId, bool add)
         {
@@ -188,7 +171,7 @@ namespace BugTracker.Controllers
 
                 DbContext.SaveChanges();
 
-                return RedirectToAction(nameof(ProjectsController.AllUsers));
+                return RedirectToAction(nameof(UsersController.AllUsersForProjects), "Users");
             }
         }
 

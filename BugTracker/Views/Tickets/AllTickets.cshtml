@@ -80,7 +80,7 @@
                                 <a href="@Url.Action("EditTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-wrench"></i></a> <a href="@Url.Action("DeleteTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-trash ml-4"></i></a>
                                 @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
                                 {
-                                    <a href="@Url.Action("AssignTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-user-plus ml-4"></i></a>
+                                    <a href="@Url.Action("AllUsersForTickets", "Users", new { id = ticket.Id})"><i class="fas fa-user-plus ml-4"></i></a>
                                 }
                             </td>
                         </tr>
