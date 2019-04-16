@@ -233,9 +233,7 @@ namespace BugTracker.Controllers
             else
             {
                 Ticket ticket = DbContext.Tickets
-                    .Where(p => p.Id == ticketId)
-                    .Select(p => p)
-                    .FirstOrDefault();
+                    .FirstOrDefault(p => p.Id == ticketId);
 
                 ticket.Title = model.Title;
                 ticket.Description = model.Description;
@@ -245,7 +243,25 @@ namespace BugTracker.Controllers
                 ticket.Status = DbContext.TicketStatuses.Where(p => p.Id == model.StatusId).FirstOrDefault();
                 ticket.DateUpdated = DateTime.Now;
 
-                DbContext.Tickets.Add(ticket);
+                DbContext.SaveChanges();
+
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+        }
+
+        [Authorize(Roles = "Admin, Project Manager")]
+        public ActionResult DeleteTicket(int? ticketId)
+        {
+            if (!ticketId.HasValue)
+            {
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+            else
+            {
+                Ticket ticket = DbContext.Tickets
+                    .FirstOrDefault(p => p.Id == ticketId);
+
+                DbContext.Tickets.Remove(ticket);
 
                 DbContext.SaveChanges();
 
