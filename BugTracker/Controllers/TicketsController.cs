@@ -222,7 +222,6 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
         [HttpPost]
         public ActionResult EditTicket(CreateTicketViewModel model, int? ticketId)
         {
@@ -237,11 +236,13 @@ namespace BugTracker.Controllers
 
                 ticket.Title = model.Title;
                 ticket.Description = model.Description;
-                ticket.Project = DbContext.Projects.Where(p => p.Id == model.ProjectId).FirstOrDefault();
-                ticket.Type = DbContext.TicketTypes.Where(p => p.Id == model.TypeId).FirstOrDefault();
-                ticket.Priority = DbContext.TicketPriorities.Where(p => p.Id == model.ProjectId).FirstOrDefault();
-                ticket.Status = DbContext.TicketStatuses.Where(p => p.Id == model.StatusId).FirstOrDefault();
+                ticket.Project = DbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
+                ticket.Type = DbContext.TicketTypes.FirstOrDefault(p => p.Id == model.TypeId);
+                ticket.Priority = DbContext.TicketPriorities.FirstOrDefault(p => p.Id == model.ProjectId);
                 ticket.DateUpdated = DateTime.Now;
+                ticket.Status = User.IsInRole("Admin") || User.IsInRole("Project Manager")
+                    ? DbContext.TicketStatuses.FirstOrDefault(p => p.Id == model.StatusId)
+                    : DbContext.TicketStatuses.FirstOrDefault(p => p.Name == "Open");
 
                 DbContext.SaveChanges();
 
@@ -249,7 +250,7 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = "Admin, Project Manager, Submitter")]
         public ActionResult DeleteTicket(int? ticketId)
         {
             if (!ticketId.HasValue)

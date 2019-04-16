@@ -37,11 +37,16 @@
                     @Html.DropDownListFor(p => p.PriorityId, (List<SelectListItem>)ViewData["priorities"], new { @class = "form-control" })
                     @Html.ValidationMessageFor(p => p.PriorityId)
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(p => p.StatusId, "Status")
-                    @Html.DropDownListFor(p => p.StatusId, (List<SelectListItem>)ViewData["statuses"], new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.StatusId)
-                </div>
+
+                if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(p => p.StatusId, "Status")
+                        @Html.DropDownListFor(p => p.StatusId, (List<SelectListItem>)ViewData["statuses"], new { @class = "form-control" })
+                        @Html.ValidationMessageFor(p => p.StatusId)
+                    </div>
+                }
+
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
