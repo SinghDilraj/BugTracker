@@ -59,7 +59,7 @@
                     @foreach (var ticket in Model)
                     {
                         <tr>
-                            <td>@ticket.Title</td>
+                            <td><a class="text-info alert-link" href="@Url.Action("Details", "Tickets", new { ticketId = ticket.Id })">@ticket.Title</a></td>
                             <td>@ticket.DateCreated</td>
 
                             @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))

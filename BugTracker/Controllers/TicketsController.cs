@@ -154,7 +154,7 @@ namespace BugTracker.Controllers
 
                 List<Project> projects = DbContext.Projects
                     //.Where(p => p.Users.Any(q => q.Id == userId))
-                    .Select(p => p)
+                    //.Select(p => p)
                     .ToList();
 
                 List<SelectListItem> projectList = new List<SelectListItem>();
@@ -271,16 +271,16 @@ namespace BugTracker.Controllers
 
         [Authorize(Roles = "Admin, Project Manager")]
         [HttpPost]
-        public ActionResult AssignTicket(int? TicketId, string userId, bool add)
+        public ActionResult AssignTicket(int? ticketId, string userId, bool add)
         {
-            if (!TicketId.HasValue || string.IsNullOrEmpty(userId))
+            if (!ticketId.HasValue || string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction(nameof(TicketsController.AllTickets));
             }
             else
             {
                 Ticket ticket = DbContext.Tickets
-                    .FirstOrDefault(p => p.Id == TicketId);
+                    .FirstOrDefault(p => p.Id == ticketId);
 
                 ApplicationUser user = DbContext.Users
                 .FirstOrDefault(p => p.Id == userId);
@@ -297,6 +297,37 @@ namespace BugTracker.Controllers
                 DbContext.SaveChanges();
 
                 return RedirectToAction(nameof(UsersController.AllUsersForTickets), "Users");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Details(int? ticketId)
+        {
+            if (!ticketId.HasValue)
+            {
+                return RedirectToAction(nameof(TicketsController.AllTickets));
+            }
+            else
+            {
+                CreateTicketViewModel model = DbContext.Tickets
+                    .Where(p => p.Id == ticketId)
+                    .Select(p => new CreateTicketViewModel
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Description = p.Description,
+                        DateCreated = p.DateCreated,
+                        DateUpdated = p.DateUpdated,
+                        CreatedByName = p.CreatedBy.UserName,
+                        AssignedToName = p.AssignedTo.UserName,
+                        TypeName = p.Type.Name,
+                        PriorityName = p.Priority.Name,
+                        StatusName = p.Status.Name,
+                        ProjectName = p.Project.Name
+                    })
+                    .FirstOrDefault();
+
+                return View(model);
             }
         }
 

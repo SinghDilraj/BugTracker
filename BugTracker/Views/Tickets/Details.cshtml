@@ -1,0 +1,39 @@
+﻿@model CreateTicketViewModel
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("Details", "Tickets")">Ticket Details</a>
+    </li>
+</ol>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="jumbotron">
+            <h1 class="display-4">@Model.Title</h1>
+            <p class="lead">Project -> @Model.ProjectName, Creater -> @Model.CreatedByName, Assignee -> @Model.AssignedToName, Created -> @Model.DateCreated, Updated -> @Model.DateUpdated</p>
+            <hr class="my-4">
+            <p>Description ->> @Model.Description</p>
+            <p class="lead">Type -> @Model.TypeName, Priority -> @Model.PriorityName, Status -> @Model.StatusName</p>
+        </div>
+    </div>
+    <div class="col-12">
+        <h1 class="display">Comments :-</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    comments
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <h1 class="display">Attachments :-</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    attachments
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

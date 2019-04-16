@@ -66,10 +66,12 @@ namespace BugTracker.Controllers
             }
             else
             {
+                IdentityRole role = DbContext.Roles.FirstOrDefault(p => p.Name == "Developers");
+
                 AssignProjectMembersViewModel model = new AssignProjectMembersViewModel
                 {
                     Id = id,
-                    Users = DbContext.Users.ToList()
+                    Users = DbContext.Users.Where(p => p.Roles.Any(p => p.RoleId == role.Id)).ToList()
                 };
 
                 return View(model);
