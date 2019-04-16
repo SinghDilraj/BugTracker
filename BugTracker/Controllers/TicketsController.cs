@@ -150,7 +150,6 @@ namespace BugTracker.Controllers
                         Type = p.Type,
                         Priority = p.Priority,
                         Status = p.Status,
-                        DateUpdated = DateTime.Now,
                         AssignedTo = p.AssignedTo,
                     }).FirstOrDefault();
 
@@ -225,26 +224,26 @@ namespace BugTracker.Controllers
 
         [Authorize(Roles = "Admin, Project Manager")]
         [HttpPost]
-        public ActionResult EditTicket(CreateTicketViewModel model)
+        public ActionResult EditTicket(CreateTicketViewModel model, int? ticketId)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !ticketId.HasValue)
             {
                 return RedirectToAction(nameof(TicketsController.AllTickets));
             }
             else
             {
                 Ticket ticket = DbContext.Tickets
-                    .Where(p => p.Id == model.Id)
+                    .Where(p => p.Id == ticketId)
                     .Select(p => p)
                     .FirstOrDefault();
 
                 ticket.Title = model.Title;
                 ticket.Description = model.Description;
-                ticket.Project = model.Project;
-                ticket.Type = model.Type;
-                ticket.Priority = model.Priority;
-                ticket.Status = model.Status;
-                ticket.DateUpdated = model.DateUpdated;
+                ticket.Project = DbContext.Projects.Where(p => p.Id == model.ProjectId).FirstOrDefault();
+                ticket.Type = DbContext.TicketTypes.Where(p => p.Id == model.TypeId).FirstOrDefault();
+                ticket.Priority = DbContext.TicketPriorities.Where(p => p.Id == model.ProjectId).FirstOrDefault();
+                ticket.Status = DbContext.TicketStatuses.Where(p => p.Id == model.StatusId).FirstOrDefault();
+                ticket.DateUpdated = DateTime.Now;
 
                 DbContext.Tickets.Add(ticket);
 

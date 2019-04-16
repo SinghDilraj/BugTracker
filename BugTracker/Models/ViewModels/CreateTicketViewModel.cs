@@ -20,7 +20,7 @@ namespace BugTracker.Models.ViewModels
         [Required]
         public string PriorityId { get; set; }
 
-        public string StatusId { get; set; }
+        public int StatusId { get; set; }
         public int Id { get; set; }
         public TicketType Type { get; set; }
         public TicketPriority Priority { get; set; }
