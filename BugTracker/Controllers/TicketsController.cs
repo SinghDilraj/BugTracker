@@ -127,7 +127,6 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
         [HttpGet]
         public ActionResult EditTicket(int? ticketId)
         {
