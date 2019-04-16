@@ -71,7 +71,7 @@ namespace BugTracker.Controllers
                 AssignProjectMembersViewModel model = new AssignProjectMembersViewModel
                 {
                     Id = id,
-                    Users = DbContext.Users.Where(p => p.Roles.Any(p => p.RoleId == role.Id)).ToList()
+                    Users = DbContext.Users.Where(p => p.Roles.Any(q => q.RoleId == role.Id)).ToList()
                 };
 
                 return View(model);

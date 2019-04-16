@@ -8,7 +8,7 @@ namespace BugTracker.Models.Classes
     public class Attachment
     {
         public int Id { get; set; }
-        public HttpPostedFileBase File { get; set; }
+        public string FileUrl { get; set; }
         public ApplicationUser CreatedBy { get; set; }
     }
 }
