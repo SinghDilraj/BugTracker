@@ -6,34 +6,144 @@
     </li>
 </ol>
 
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="jumbotron">
-            <h1 class="display-4">@Model.Title</h1>
-            <p class="lead">Project -> @Model.ProjectName, Creater -> @Model.CreatedByName, Assignee -> @Model.AssignedToName, Created -> @Model.DateCreated, Updated -> @Model.DateUpdated</p>
-            <hr class="my-4">
-            <p>Description ->> @Model.Description</p>
-            <p class="lead">Type -> @Model.TypeName, Priority -> @Model.PriorityName, Status -> @Model.StatusName</p>
+<div class="jumbotron">
+    <h1 class="display-4">@Model.Title</h1>
+    <p class="lead mt-3">@Model.Description</p>
+    <a class="btn btn-primary" href="#content">Comments</a>
+    <a class="btn btn-primary" href="#content">Attachments</a>
+</div>
+<div class="container">
+    <div class="card-deck mb-4">
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Project
+                </h5>
+                <p class="card-text mt-5">
+                    @Model.ProjectName
+                </p>
+            </div>
         </div>
-    </div>
-    <div class="col-12">
-        <h1 class="display">Comments :-</h1>
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    comments
-                </div>
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Creater
+                </h5>
+                <p class="card-text mt-5">
+                    @Model.CreatedByName
+                </p>
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Assignee
+                </h5>
+                @if (Model.AssignedToName == null)
+                {
+                    <p class="card-text mt-5">
+                        None
+                    </p>
+                }
+                else
+                {
+                    <p class="card-text mt-5">
+                        @Model.AssignedToName
+                    </p>
+                }
             </div>
         </div>
     </div>
-    <div class="col-12">
-        <h1 class="display">Attachments :-</h1>
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    attachments
-                </div>
+    <div class="card-deck mb-4">
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Type
+                </h5>
+                <p class="card-text mt-5">
+                    @Model.TypeName
+                </p>
             </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Priority
+                </h5>
+                <p class="card-text mt-5">
+                    @Model.PriorityName
+                </p>
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Status
+                </h5>
+                <p class="card-text mt-5">
+                    @Model.StatusName
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="card-deck mb-4">
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Date Created
+                </h5>
+                <p class="card-text mt-5">
+                    @Model.DateCreated
+                </p>
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-block">
+                <h5 class="card-title">
+                    Date Updated
+                </h5>
+                @if (string.IsNullOrEmpty(Model.DateUpdated.ToString()))
+                {
+                    <p class="card-text mt-5">
+                        Never
+                    </p>
+                }
+                else
+                {
+                    <p class="card-text mt-5">
+                        @Model.DateUpdated
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<hr />
+<hr />
+<div class="container mt-5" id="content">
+    <div class="row">
+        <div class="col-6">
+            <h4 class="text-center">Comments</h4>
+            @*@foreach (var comment in Model.Comments)
+                {
+                    <div class="card">
+                        <div class="card-title">@comment.Title</div>
+                        <div class="card-subtitle">@comment.CreatedBy.Email</div>
+                    </div>
+                }*@
+            @Html.Partial("~/Views/Comments/_AddComment.cshtml", new CommentViewModel() { Id = Model.Id })
+        </div>
+        <div class="col-6">
+            <h4 class="text-center">Attachments</h4>
+            @*@foreach (var attachment in Model.Attachments)
+                {
+                    <div class="card">
+                        <div class="card-title"><a href="@attachment.fileUrl">@attachment.fileName</a></div>
+                        <div class="card-subtitle">@attachment.CreatedBy.Email</div>
+                    </div>
+                }*@
+            @Html.Partial("~/Views/Attachments/_AddAttachment.cshtml", new AttachmentViewModel() { Id = Model.Id })
         </div>
     </div>
 </div>

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BugTracker.Models.Classes
+namespace BugTracker.Models.ViewModels
 {
-    public class Attachment
+    public class AttachmentViewModel
     {
         public int Id { get; set; }
-        public string FileUrl { get; set; }
-        public virtual ApplicationUser CreatedBy { get; set; }
+        public HttpPostedFileBase file { get; set; }
         public DateTime DateCreated { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
     }
 }

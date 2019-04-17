@@ -18,6 +18,8 @@ namespace BugTracker.Models.Classes
         public virtual ApplicationUser CreatedBy { get; set; }
         public virtual ApplicationUser AssignedTo { get; set; }
         public virtual Project Project { get; set; }
+        public virtual List<Comment> Comments { get; set; }
+        public virtual List<Attachment> Attachments { get; set; }
 
         public Ticket()
         {

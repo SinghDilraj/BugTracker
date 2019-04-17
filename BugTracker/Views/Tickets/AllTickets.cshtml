@@ -58,32 +58,40 @@
                 <tbody class="text-primary">
                     @foreach (var ticket in Model)
                     {
-                        <tr>
-                            <td><a class="text-info alert-link" href="@Url.Action("Details", "Tickets", new { ticketId = ticket.Id })">@ticket.Title</a></td>
-                            <td>@ticket.DateCreated</td>
+                    <tr>
+                        <td><a class="text-info alert-link" href="@Url.Action("Details", "Tickets", new { ticketId = ticket.Id })">@ticket.Title</a></td>
+                        <td>@ticket.DateCreated</td>
 
-                            @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))
-                            {
-                                <td>never</td>
-                            }
-                            else
-                            {
-                                <td>@ticket.DateUpdated</td>
-                            }
-                            <td>@ticket.ProjectName</td>
-                            <td>@ticket.CreatedByName</td>
+                        @if (string.IsNullOrEmpty(ticket.DateUpdated.ToString()))
+                        {
+                            <td>never</td>
+                        }
+                        else
+                        {
+                            <td>@ticket.DateUpdated</td>
+                        }
+                        <td>@ticket.ProjectName</td>
+                        <td>@ticket.CreatedByName</td>
+                        @if (string.IsNullOrEmpty(ticket.AssignedToName))
+                        {
+                            <td>None</td>
+                        }
+                        else
+                        {
                             <td>@ticket.AssignedToName</td>
-                            <td>@ticket.TypeName</td>
-                            <td>@ticket.PriorityName</td>
-                            <td>@ticket.StatusName</td>
-                            <td>
-                                <a href="@Url.Action("EditTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-wrench"></i></a> <a href="@Url.Action("DeleteTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-trash ml-4"></i></a>
-                                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
-                                {
-                                    <a href="@Url.Action("AllUsersForTickets", "Users", new { id = ticket.Id})"><i class="fas fa-user-plus ml-4"></i></a>
-                                }
-                            </td>
-                        </tr>
+                        }
+
+                        <td>@ticket.TypeName</td>
+                        <td>@ticket.PriorityName</td>
+                        <td>@ticket.StatusName</td>
+                        <td>
+                            <a href="@Url.Action("EditTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-wrench"></i></a> <a href="@Url.Action("DeleteTicket", "Tickets", new { ticketId = ticket.Id})"><i class="fas fa-trash ml-4"></i></a>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                            {
+                                <a href="@Url.Action("AllUsersForTickets", "Users", new { id = ticket.Id})"><i class="fas fa-user-plus ml-4"></i></a>
+                            }
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

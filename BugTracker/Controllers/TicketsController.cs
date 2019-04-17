@@ -311,7 +311,7 @@ namespace BugTracker.Controllers
         {
             if (!ticketId.HasValue)
             {
-                return RedirectToAction(nameof(TicketsController.AllTickets));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {

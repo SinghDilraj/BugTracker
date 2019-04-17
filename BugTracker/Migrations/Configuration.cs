@@ -1,13 +1,11 @@
 namespace BugTracker.Migrations
 {
     using BugTracker.Models;
+    using BugTracker.Models.Classes;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using BugTracker.Models.Classes;
 
     internal sealed class Configuration : DbMigrationsConfiguration<BugTracker.Models.ApplicationDbContext>
     {
@@ -25,40 +23,40 @@ namespace BugTracker.Migrations
             //  to avoid creating duplicate seed data.
 
             //role manager
-            var roleManager =
+            RoleManager<IdentityRole> roleManager =
                new RoleManager<IdentityRole>(
                    new RoleStore<IdentityRole>(context));
 
             //Admin role
             if (!context.Roles.Any(p => p.Name == "Admin"))
             {
-                var adminRole = new IdentityRole("Admin");
+                IdentityRole adminRole = new IdentityRole("Admin");
                 roleManager.Create(adminRole);
             }
 
             //Project Manager role
             if (!context.Roles.Any(p => p.Name == "Project Manager"))
             {
-                var projectManagerRole = new IdentityRole("Project Manager");
+                IdentityRole projectManagerRole = new IdentityRole("Project Manager");
                 roleManager.Create(projectManagerRole);
             }
 
             //Developer role
             if (!context.Roles.Any(p => p.Name == "Developer"))
             {
-                var developerRole = new IdentityRole("Developer");
+                IdentityRole developerRole = new IdentityRole("Developer");
                 roleManager.Create(developerRole);
             }
 
             //Submitter role
             if (!context.Roles.Any(p => p.Name == "Submitter"))
             {
-                var submitterRole = new IdentityRole("Submitter");
+                IdentityRole submitterRole = new IdentityRole("Submitter");
                 roleManager.Create(submitterRole);
             }
 
             //user manager
-            var userManager =
+            UserManager<ApplicationUser> userManager =
                 new UserManager<ApplicationUser>(
                         new UserStore<ApplicationUser>(context));
 
