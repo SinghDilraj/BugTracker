@@ -1,11 +1,7 @@
 ﻿using BugTracker.Models;
-using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace BugTracker.Controllers
@@ -13,9 +9,12 @@ namespace BugTracker.Controllers
     [Authorize]
     public class RolesController : Controller
     {
-        private ApplicationDbContext DbContext;
-
-        private UserManager<ApplicationUser> DefaultUserManager;
+        private const string Submitter = "Submitter";
+        private const string Admin = "Admin";
+        private const string ProjectManager = "Project Manager";
+        private const string Developer = "Developer";
+        private readonly ApplicationDbContext DbContext;
+        private readonly UserManager<ApplicationUser> DefaultUserManager;
 
         public RolesController()
         {
@@ -24,7 +23,7 @@ namespace BugTracker.Controllers
             DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Admin)]
         [HttpGet]
         public ActionResult Roles(UserManagerRolesViewModel model, string id)
         {
@@ -34,13 +33,13 @@ namespace BugTracker.Controllers
             }
             else
             {
-                model.Admin = DefaultUserManager.IsInRole(id, "Admin") ? true : false;
+                model.Admin = DefaultUserManager.IsInRole(id, Admin) ? true : false;
 
-                model.ProjectManager = DefaultUserManager.IsInRole(id, "Project Manager") ? true : false;
+                model.ProjectManager = DefaultUserManager.IsInRole(id, ProjectManager) ? true : false;
 
-                model.Developer = DefaultUserManager.IsInRole(id, "Developer") ? true : false;
+                model.Developer = DefaultUserManager.IsInRole(id, Developer) ? true : false;
 
-                model.Submitter = DefaultUserManager.IsInRole(id, "Submitter") ? true : false;
+                model.Submitter = DefaultUserManager.IsInRole(id, Submitter) ? true : false;
 
                 model.Id = id;
 
@@ -50,7 +49,7 @@ namespace BugTracker.Controllers
 
         [HttpPost]
         [ActionName("Roles")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Admin)]
         public ActionResult RolesPost(UserManagerRolesViewModel model, string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -61,38 +60,38 @@ namespace BugTracker.Controllers
             {
                 if (model.Admin == true)
                 {
-                    DefaultUserManager.AddToRole(id, "Admin");
+                    DefaultUserManager.AddToRole(id, Admin);
                 }
                 else
                 {
-                    DefaultUserManager.RemoveFromRole(id, "Admin");
+                    DefaultUserManager.RemoveFromRole(id, Admin);
                 }
 
                 if (model.ProjectManager == true)
                 {
-                    DefaultUserManager.AddToRole(id, "Project Manager");
+                    DefaultUserManager.AddToRole(id, ProjectManager);
                 }
                 else
                 {
-                    DefaultUserManager.RemoveFromRole(id, "Project Manager");
+                    DefaultUserManager.RemoveFromRole(id, ProjectManager);
                 }
 
                 if (model.Developer == true)
                 {
-                    DefaultUserManager.AddToRole(id, "Developer");
+                    DefaultUserManager.AddToRole(id, Developer);
                 }
                 else
                 {
-                    DefaultUserManager.RemoveFromRole(id, "Developer");
+                    DefaultUserManager.RemoveFromRole(id, Developer);
                 }
 
                 if (model.Submitter == true)
                 {
-                    DefaultUserManager.AddToRole(id, "Submitter");
+                    DefaultUserManager.AddToRole(id, Submitter);
                 }
                 else
                 {
-                    DefaultUserManager.RemoveFromRole(id, "Submitter");
+                    DefaultUserManager.RemoveFromRole(id, Submitter);
                 }
 
                 return RedirectToAction(nameof(UsersController.UserManager), "Users");

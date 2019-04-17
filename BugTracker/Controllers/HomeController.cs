@@ -13,17 +13,6 @@ namespace BugTracker.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private ApplicationDbContext DbContext;
-
-        private UserManager<ApplicationUser> DefaultUserManager;
-
-        public HomeController()
-        {
-            DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
-        }
-
         public ActionResult Index()
         {
             return View();

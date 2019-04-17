@@ -15,6 +15,10 @@ namespace BugTracker.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private const string Submitter = "Submitter";
+        private const string Admin = "Admin";
+        private const string ProjectManager = "Project Manager";
+        private const string Developer = "Developer";
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -22,7 +26,7 @@ namespace BugTracker.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +38,9 @@ namespace BugTracker.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -72,7 +76,7 @@ namespace BugTracker.Controllers
             {
                 return View(model);
             }
-            
+
             //Not Implemented Yet.
             //UnComment the Following Lines To Implement 
             //checking if Email Address is Confirmed
@@ -136,7 +140,7 @@ namespace BugTracker.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -171,7 +175,7 @@ namespace BugTracker.Controllers
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    UserManager.AddToRole(user.Id, "Submitter");
+                    UserManager.AddToRole(user.Id, Submitter);
 
                     //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 

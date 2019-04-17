@@ -13,9 +13,15 @@ namespace BugTracker.Controllers
     [Authorize]
     public class TicketsController : Controller
     {
-        private ApplicationDbContext DbContext;
-
-        private UserManager<ApplicationUser> DefaultUserManager;
+        private const string Submitter = "Submitter";
+        private const string Admin = "Admin";
+        private const string ProjectManager = "Project Manager";
+        private const string Developer = "Developer";
+        private const string AdminAndProjectManagerAndSubmitter = "Admin, Project Manager, Submitter";
+        private const string AdminAndProjectManager = "Admin, Project Manager";
+        private const string SubmitterAndDeveloper = "Submitter, Developer";
+        private readonly ApplicationDbContext DbContext;
+        private readonly UserManager<ApplicationUser> DefaultUserManager;
 
         public TicketsController()
         {
@@ -24,7 +30,7 @@ namespace BugTracker.Controllers
             DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
 
-        [Authorize(Roles = "Submitter")]
+        [Authorize(Roles = Submitter)]
         [HttpGet]
         public ActionResult CreateTicket()
         {
@@ -92,7 +98,7 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Submitter")]
+        [Authorize(Roles = Submitter)]
         [HttpPost]
         public ActionResult CreateTicket(CreateTicketViewModel model)
         {
@@ -239,7 +245,7 @@ namespace BugTracker.Controllers
                 ticket.Type = DbContext.TicketTypes.FirstOrDefault(p => p.Id == model.TypeId);
                 ticket.Priority = DbContext.TicketPriorities.FirstOrDefault(p => p.Id == model.ProjectId);
                 ticket.DateUpdated = DateTime.Now;
-                ticket.Status = User.IsInRole("Admin") || User.IsInRole("Project Manager")
+                ticket.Status = User.IsInRole(Admin) || User.IsInRole(ProjectManager)
                     ? DbContext.TicketStatuses.FirstOrDefault(p => p.Id == model.StatusId)
                     : DbContext.TicketStatuses.FirstOrDefault(p => p.Name == "Open");
 
@@ -249,7 +255,7 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager, Submitter")]
+        [Authorize(Roles = AdminAndProjectManagerAndSubmitter)]
         public ActionResult DeleteTicket(int? ticketId)
         {
             if (!ticketId.HasValue)
@@ -269,7 +275,7 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpPost]
         public ActionResult AssignTicket(int? ticketId, string userId, bool add)
         {
@@ -342,7 +348,7 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<CreateTicketViewModel> model = User.IsInRole("Submitter") || User.IsInRole("Developer")
+                List<CreateTicketViewModel> model = User.IsInRole(Submitter) || User.IsInRole(Developer)
                     ? DbContext.Tickets
                             .Where(p => p.Project.Users.Any(q => q.Id == userId))
                             .Select(p => new CreateTicketViewModel
@@ -378,7 +384,7 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Submitter, Developer")]
+        [Authorize(Roles = SubmitterAndDeveloper)]
         [HttpGet]
         public ActionResult MyTickets()
         {
@@ -390,7 +396,7 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<CreateTicketViewModel> model = User.IsInRole("Submitter")
+                List<CreateTicketViewModel> model = User.IsInRole(Submitter)
                     ? DbContext.Tickets
                     .Where(p => p.CreatedBy.Id == userId)
                     .Select(p => new CreateTicketViewModel

@@ -2,7 +2,6 @@
 using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +12,15 @@ namespace BugTracker.Controllers
     [Authorize]
     public class ProjectsController : Controller
     {
-        private ApplicationDbContext DbContext;
-
-        private UserManager<ApplicationUser> DefaultUserManager;
+        private const string AdminAndProjectManager = "Admin, Project Manager";
+        private readonly ApplicationDbContext DbContext;
 
         public ProjectsController()
         {
             DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
         public ActionResult CreateProject()
         {
@@ -32,7 +28,7 @@ namespace BugTracker.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpPost]
         public ActionResult CreateProject(HomeProjectViewModel model)
         {
@@ -54,7 +50,7 @@ namespace BugTracker.Controllers
             return RedirectToAction(nameof(ProjectsController.AllProjects));
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
         public ActionResult AllProjects()
         {
@@ -72,7 +68,7 @@ namespace BugTracker.Controllers
             return View(projects);
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
         public ActionResult EditProject(int? id)
         {
@@ -91,7 +87,7 @@ namespace BugTracker.Controllers
             return View(project);
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpPost]
         public ActionResult EditProject(HomeProjectViewModel model, int? id)
         {
@@ -121,7 +117,7 @@ namespace BugTracker.Controllers
             return RedirectToAction(nameof(ProjectsController.AllProjects));
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         public ActionResult DeleteProject(int? id)
         {
             if (!id.HasValue)
@@ -144,7 +140,7 @@ namespace BugTracker.Controllers
             return RedirectToAction(nameof(ProjectsController.AllProjects));
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpPost]
         public ActionResult AssignProject(int? projectId, string userId, bool add)
         {
@@ -179,6 +175,7 @@ namespace BugTracker.Controllers
         public ActionResult MyProjects()
         {
             string userId = User.Identity.GetUserId();
+
             List<HomeProjectViewModel> projects = DbContext.Projects
                 .Where(p => p.Users.Any(x => x.Id == userId))
                 .Select(p =>

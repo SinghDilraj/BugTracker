@@ -11,18 +11,17 @@ namespace BugTracker.Controllers
     [Authorize]
     public class UsersController : Controller
     {
-        private ApplicationDbContext DbContext;
-
-        private UserManager<ApplicationUser> DefaultUserManager;
+        private const string Admin = "Admin";
+        private const string AdminAndProjectManager = "Admin, Project Manager";
+        private const string Developer = "Developer";
+        private readonly ApplicationDbContext DbContext;
 
         public UsersController()
         {
             DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Admin)]
         public ActionResult UserManager()
         {
             List<UserViewModel> users = DbContext.Users
@@ -36,7 +35,7 @@ namespace BugTracker.Controllers
             return View(users);
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
         public ActionResult AllUsersForProjects(int? id)
         {
@@ -56,7 +55,7 @@ namespace BugTracker.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
         public ActionResult AllUsersForTickets(int? id)
         {
@@ -66,7 +65,7 @@ namespace BugTracker.Controllers
             }
             else
             {
-                IdentityRole role = DbContext.Roles.FirstOrDefault(p => p.Name == "Developers");
+                IdentityRole role = DbContext.Roles.FirstOrDefault(p => p.Name == Developer);
 
                 AssignProjectMembersViewModel model = new AssignProjectMembersViewModel
                 {

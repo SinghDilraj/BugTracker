@@ -13,6 +13,10 @@ namespace BugTracker.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        private const string Submitter = "Submitter";
+        private const string Admin = "Admin";
+        private const string ProjectManager = "Project Manager";
+        private const string Developer = "Developer";
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -32,9 +36,9 @@ namespace BugTracker.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -98,7 +102,7 @@ namespace BugTracker.Controllers
 
             ApplicationUser user = await UserManager.FindByIdAsync(userId);
 
-            if(user != null)
+            if (user != null)
             {
                 user.DisplayName = model.DisplayName;
                 await UserManager.UpdateAsync(user);
@@ -371,7 +375,7 @@ namespace BugTracker.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -422,6 +426,6 @@ namespace BugTracker.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

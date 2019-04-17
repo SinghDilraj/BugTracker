@@ -90,7 +90,7 @@ namespace BugTracker.Migrations
             //Seeding Ticket Types, Priorities and Statuses.
 
             //Tickets
-            context.TicketTypes.AddOrUpdate(p => p.Name, new TicketType(){ Name = "Bug" }, new TicketType() { Name = "Feature" }, new TicketType() { Name = "Database" }, new TicketType() { Name = "Support" });
+            context.TicketTypes.AddOrUpdate(p => p.Name, new TicketType() { Name = "Bug" }, new TicketType() { Name = "Feature" }, new TicketType() { Name = "Database" }, new TicketType() { Name = "Support" });
 
             //Priorities
             context.TicketPriorities.AddOrUpdate(p => p.Name, new TicketPriority() { Name = "Low" }, new TicketPriority() { Name = "Medium" }, new TicketPriority() { Name = "High" });
