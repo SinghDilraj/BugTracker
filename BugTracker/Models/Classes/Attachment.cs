@@ -13,5 +13,10 @@ namespace BugTracker.Models.Classes
         public virtual Ticket Ticket { get; set; }
         public virtual ApplicationUser CreatedBy { get; set; }
         public DateTime DateCreated { get; set; }
+
+        public Attachment()
+        {
+            DateCreated = DateTime.Now;
+        }
     }
 }
