@@ -27,6 +27,11 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult AddComment(CommentViewModel model, int ticketId)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
             Comment comment = new Comment()
             {
                 Title = model.Title,

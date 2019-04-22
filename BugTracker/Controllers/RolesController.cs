@@ -52,6 +52,11 @@ namespace BugTracker.Controllers
         [Authorize(Roles = Admin)]
         public ActionResult RolesPost(UserManagerRolesViewModel model, string id)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
             if (string.IsNullOrEmpty(id))
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");

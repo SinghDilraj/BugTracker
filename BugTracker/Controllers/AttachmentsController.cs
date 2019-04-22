@@ -29,39 +29,31 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult AddAttachment(AttachmentViewModel model, int ticketId)
         {
-            if (!Directory.Exists(FileHelper.MappedUploadFolder))
+            if (ModelState.IsValid)
             {
-                Directory.CreateDirectory(FileHelper.MappedUploadFolder);
-            }
+                if (!Directory.Exists(FileHelper.MappedUploadFolder))
+                {
+                    Directory.CreateDirectory(FileHelper.MappedUploadFolder);
+                }
 
-            string fileName = model.file.FileName;
-            string fullPathWithName = FileHelper.MappedUploadFolder + fileName;
+                string fileName = model.file.FileName;
+                string fullPathWithName = FileHelper.MappedUploadFolder + fileName;
 
-            model.file.SaveAs(fullPathWithName);
+                model.file.SaveAs(fullPathWithName);
 
-            Attachment attachment = new Attachment()
-            {
-                FileUrl = FileHelper.UploadFolder + fileName,
-                FileName = fileName,
-                CreatedBy = DefaultUserManager.FindById(User.Identity.GetUserId()),
-                Ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId)
-            };
+                Attachment attachment = new Attachment()
+                {
+                    FileUrl = FileHelper.UploadFolder + fileName,
+                    FileName = fileName,
+                    CreatedBy = DefaultUserManager.FindById(User.Identity.GetUserId()),
+                    Ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId)
+                };
 
-            ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
+                ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
 
-            Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
+                Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
 
-            if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
-            {
-                DbContext.Attachments.Add(attachment);
-
-                DbContext.SaveChanges();
-
-                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
-            }
-            else if (User.IsInRole(Submitter))
-            {
-                if (ticket.CreatedBy == user)
+                if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
                 {
                     DbContext.Attachments.Add(attachment);
 
@@ -69,29 +61,44 @@ namespace BugTracker.Controllers
 
                     return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
                 }
+                else if (User.IsInRole(Submitter))
+                {
+                    if (ticket.CreatedBy == user)
+                    {
+                        DbContext.Attachments.Add(attachment);
+
+                        DbContext.SaveChanges();
+
+                        return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                }
+                else if (User.IsInRole(Developer))
+                {
+                    if (ticket.AssignedTo == user)
+                    {
+                        DbContext.Attachments.Add(attachment);
+
+                        DbContext.SaveChanges();
+
+                        return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                }
                 else
                 {
-                    return RedirectToAction(nameof(TicketsController.AllTickets));
-                }
-            }
-            else if (User.IsInRole(Developer))
-            {
-                if (ticket.AssignedTo == user)
-                {
-                    DbContext.Attachments.Add(attachment);
-
-                    DbContext.SaveChanges();
-
                     return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
-                }
-                else
-                {
-                    return RedirectToAction(nameof(TicketsController.AllTickets));
                 }
             }
             else
             {
-                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
     }

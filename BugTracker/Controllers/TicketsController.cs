@@ -102,6 +102,11 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult CreateTicket(TicketViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
             string userId = User.Identity.GetUserId();
 
             if (string.IsNullOrEmpty(userId))
@@ -352,7 +357,7 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult AssignTicket(int? ticketId, string userId, bool add)
         {
-            if (!ticketId.HasValue || string.IsNullOrEmpty(userId))
+            if (!ticketId.HasValue || string.IsNullOrEmpty(userId) || !ModelState.IsValid)
             {
                 return RedirectToAction(nameof(TicketsController.AllTickets));
             }
