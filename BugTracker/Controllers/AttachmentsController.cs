@@ -51,7 +51,15 @@ namespace BugTracker.Controllers
 
             Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
 
-            if (User.IsInRole(Submitter))
+            if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
+            {
+                DbContext.Attachments.Add(attachment);
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+            }
+            else if (User.IsInRole(Submitter))
             {
                 if (ticket.CreatedBy == user)
                 {
@@ -80,14 +88,6 @@ namespace BugTracker.Controllers
                 {
                     return RedirectToAction(nameof(TicketsController.AllTickets));
                 }
-            }
-            else if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
-            {
-                DbContext.Attachments.Add(attachment);
-
-                DbContext.SaveChanges();
-
-                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
             }
             else
             {

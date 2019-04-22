@@ -226,7 +226,11 @@ namespace BugTracker.Controllers
 
                 ApplicationUser user = DefaultUserManager.FindById(userId);
 
-                if (User.IsInRole(Submitter))
+                if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
+                {
+                    return View(model);
+                }
+                else if (User.IsInRole(Submitter))
                 {
                     if (ticket.CreatedBy == user)
                     {
@@ -247,10 +251,6 @@ namespace BugTracker.Controllers
                     {
                         return RedirectToAction(nameof(TicketsController.AllTickets));
                     }
-                }
-                else if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
-                {
-                    return View(model);
                 }
                 else
                 {
@@ -303,7 +303,15 @@ namespace BugTracker.Controllers
                 Ticket ticket = DbContext.Tickets
                     .FirstOrDefault(p => p.Id == ticketId);
 
-                if (User.IsInRole(Submitter))
+                if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
+                {
+                    DbContext.Tickets.Remove(ticket);
+
+                    DbContext.SaveChanges();
+
+                    return RedirectToAction(nameof(TicketsController.AllTickets));
+                }
+                else if (User.IsInRole(Submitter))
                 {
                     if (ticket.CreatedBy == user)
                     {
@@ -332,14 +340,6 @@ namespace BugTracker.Controllers
                     {
                         return RedirectToAction(nameof(TicketsController.AllTickets));
                     }
-                }
-                else if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
-                {
-                    DbContext.Tickets.Remove(ticket);
-
-                    DbContext.SaveChanges();
-
-                    return RedirectToAction(nameof(TicketsController.AllTickets));
                 }
                 else
                 {
