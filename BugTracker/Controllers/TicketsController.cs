@@ -144,19 +144,20 @@ namespace BugTracker.Controllers
             }
             else
             {
-                TicketViewModel model = DbContext.Tickets
-                    .Where(p => p.Id == ticketId)
-                    .Select(p => new TicketViewModel
-                    {
-                        Id = p.Id,
-                        Title = p.Title,
-                        Description = p.Description,
-                        Project = p.Project,
-                        Type = p.Type,
-                        Priority = p.Priority,
-                        Status = p.Status,
-                        AssignedTo = p.AssignedTo,
-                    }).FirstOrDefault();
+                Ticket ticket = DbContext.Tickets
+                    .FirstOrDefault(p => p.Id == ticketId);
+
+                TicketViewModel model = new TicketViewModel
+                {
+                    Id = ticket.Id,
+                    Title = ticket.Title,
+                    Description = ticket.Description,
+                    Project = ticket.Project,
+                    Type = ticket.Type,
+                    Priority = ticket.Priority,
+                    Status = ticket.Status,
+                    AssignedTo = ticket.AssignedTo,
+                };
 
                 List<Project> projects = DbContext.Projects
                     .Where(p => p.Users.Any(q => q.Id == userId))
@@ -223,7 +224,38 @@ namespace BugTracker.Controllers
 
                 ViewData["statuses"] = statusList;
 
-                return View(model);
+                ApplicationUser user = DefaultUserManager.FindById(userId);
+
+                if (User.IsInRole(Submitter))
+                {
+                    if (ticket.CreatedBy == user)
+                    {
+                        return View(model);
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                }
+                else if (User.IsInRole(Developer))
+                {
+                    if (ticket.AssignedTo == user)
+                    {
+                        return View(model);
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                }
+                else if (User.IsInRole(AdminAndProjectManager))
+                {
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToAction(nameof(TicketsController.AllTickets));
+                }
             }
         }
 
@@ -264,14 +296,55 @@ namespace BugTracker.Controllers
             }
             else
             {
+                string userId = User.Identity.GetUserId();
+
+                ApplicationUser user = DefaultUserManager.FindById(userId);
+
                 Ticket ticket = DbContext.Tickets
                     .FirstOrDefault(p => p.Id == ticketId);
 
-                DbContext.Tickets.Remove(ticket);
+                if (User.IsInRole(Submitter))
+                {
+                    if (ticket.CreatedBy == user)
+                    {
+                        DbContext.Tickets.Remove(ticket);
 
-                DbContext.SaveChanges();
+                        DbContext.SaveChanges();
 
-                return RedirectToAction(nameof(TicketsController.AllTickets));
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                }
+                else if (User.IsInRole(Developer))
+                {
+                    if (ticket.AssignedTo == user)
+                    {
+                        DbContext.Tickets.Remove(ticket);
+
+                        DbContext.SaveChanges();
+
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(TicketsController.AllTickets));
+                    }
+                }
+                else if (User.IsInRole(AdminAndProjectManager))
+                {
+                    DbContext.Tickets.Remove(ticket);
+
+                    DbContext.SaveChanges();
+
+                    return RedirectToAction(nameof(TicketsController.AllTickets));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(TicketsController.AllTickets));
+                }
             }
         }
 
