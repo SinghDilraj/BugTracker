@@ -159,8 +159,8 @@ namespace BugTracker.Controllers
                     }).FirstOrDefault();
 
                 List<Project> projects = DbContext.Projects
-                    //.Where(p => p.Users.Any(q => q.Id == userId))
-                    //.Select(p => p)
+                    .Where(p => p.Users.Any(q => q.Id == userId))
+                    .Select(p => p)
                     .ToList();
 
                 List<SelectListItem> projectList = new List<SelectListItem>();
@@ -350,7 +350,9 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<TicketViewModel> model = User.IsInRole(Submitter) || User.IsInRole(Developer)
+                List<TicketViewModel> model = (User.IsInRole(Submitter)
+                                               && !User.IsInRole(Admin)
+                                               && !User.IsInRole(ProjectManager)) || (User.IsInRole(Developer) && !User.IsInRole(Admin) && !User.IsInRole(ProjectManager))
                     ? DbContext.Tickets
                             .Where(p => p.Project.Users.Any(q => q.Id == userId))
                             .Select(p => new TicketViewModel
