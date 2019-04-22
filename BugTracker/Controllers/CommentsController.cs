@@ -12,6 +12,10 @@ namespace BugTracker.Controllers
     {
         private readonly ApplicationDbContext DbContext;
         private readonly UserManager<ApplicationUser> DefaultUserManager;
+        private const string Submitter = "Submitter";
+        private const string Admin = "Admin";
+        private const string ProjectManager = "Project Manager";
+        private const string Developer = "Developer";
 
         public CommentsController()
         {
@@ -30,11 +34,52 @@ namespace BugTracker.Controllers
                 Ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId)
             };
 
-            DbContext.Comments.Add(comment);
+            ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
 
-            DbContext.SaveChanges();
+            Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
 
-            return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+            if (User.IsInRole(Submitter))
+            {
+                if (ticket.CreatedBy == user)
+                {
+                    DbContext.Comments.Add(comment);
+
+                    DbContext.SaveChanges();
+
+                    return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                }
+                else
+                {
+                    return RedirectToAction(nameof(TicketsController.AllTickets));
+                }
+            }
+            else if (User.IsInRole(Developer))
+            {
+                if (ticket.AssignedTo == user)
+                {
+                    DbContext.Comments.Add(comment);
+
+                    DbContext.SaveChanges();
+
+                    return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                }
+                else
+                {
+                    return RedirectToAction(nameof(TicketsController.AllTickets));
+                }
+            }
+            else if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
+            {
+                DbContext.Comments.Add(comment);
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+            }
+            else
+            {
+                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+            }
         }
     }
 }

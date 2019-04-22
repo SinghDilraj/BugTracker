@@ -248,7 +248,7 @@ namespace BugTracker.Controllers
                         return RedirectToAction(nameof(TicketsController.AllTickets));
                     }
                 }
-                else if (User.IsInRole(AdminAndProjectManager))
+                else if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
                 {
                     return View(model);
                 }
@@ -333,7 +333,7 @@ namespace BugTracker.Controllers
                         return RedirectToAction(nameof(TicketsController.AllTickets));
                     }
                 }
-                else if (User.IsInRole(AdminAndProjectManager))
+                else if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
                 {
                     DbContext.Tickets.Remove(ticket);
 
