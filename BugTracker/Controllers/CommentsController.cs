@@ -3,6 +3,7 @@ using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace BugTracker.Controllers
@@ -20,12 +21,13 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddComment(CommentViewModel model)
+        public ActionResult AddComment(CommentViewModel model, int ticketId)
         {
             Comment comment = new Comment()
             {
                 Title = model.Title,
                 CreatedBy = DefaultUserManager.FindById(User.Identity.GetUserId()),
+                Ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId)
             };
 
             DbContext.Comments.Add(comment);
@@ -34,6 +36,5 @@ namespace BugTracker.Controllers
 
             return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
         }
-
     }
 }

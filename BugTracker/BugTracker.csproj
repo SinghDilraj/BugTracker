@@ -184,9 +184,10 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Models\Classes\Attachment.cs" />
     <Compile Include="Models\Classes\Comment.cs" />
+    <Compile Include="Models\Extensions\FileHelper.cs" />
     <Compile Include="Models\ViewModels\AttachmentViewModel.cs" />
     <Compile Include="Models\ViewModels\CommentViewModel.cs" />
-    <Compile Include="Models\ViewModels\CreateTicketViewModel.cs" />
+    <Compile Include="Models\ViewModels\TicketViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -42,7 +42,7 @@ namespace BugTracker.Controllers
             }
             else
             {
-                CreateTicketViewModel model = new CreateTicketViewModel();
+                TicketViewModel model = new TicketViewModel();
 
                 List<Project> projects = DbContext.Projects
                     .Where(p => p.Users.Any(q => q.Id == userId))
@@ -100,7 +100,7 @@ namespace BugTracker.Controllers
 
         [Authorize(Roles = Submitter)]
         [HttpPost]
-        public ActionResult CreateTicket(CreateTicketViewModel model)
+        public ActionResult CreateTicket(TicketViewModel model)
         {
             string userId = User.Identity.GetUserId();
 
@@ -144,9 +144,9 @@ namespace BugTracker.Controllers
             }
             else
             {
-                CreateTicketViewModel model = DbContext.Tickets
+                TicketViewModel model = DbContext.Tickets
                     .Where(p => p.Id == ticketId)
-                    .Select(p => new CreateTicketViewModel
+                    .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
                         Title = p.Title,
@@ -228,7 +228,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditTicket(CreateTicketViewModel model, int? ticketId)
+        public ActionResult EditTicket(TicketViewModel model, int? ticketId)
         {
             if (!ModelState.IsValid || !ticketId.HasValue)
             {
@@ -315,9 +315,9 @@ namespace BugTracker.Controllers
             }
             else
             {
-                CreateTicketViewModel model = DbContext.Tickets
+                TicketViewModel model = DbContext.Tickets
                     .Where(p => p.Id == ticketId)
-                    .Select(p => new CreateTicketViewModel
+                    .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
                         Title = p.Title,
@@ -329,7 +329,9 @@ namespace BugTracker.Controllers
                         TypeName = p.Type.Name,
                         PriorityName = p.Priority.Name,
                         StatusName = p.Status.Name,
-                        ProjectName = p.Project.Name
+                        ProjectName = p.Project.Name,
+                        Comments = p.Comments,
+                        Attachments = p.Attachments
                     })
                     .FirstOrDefault();
 
@@ -348,10 +350,10 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<CreateTicketViewModel> model = User.IsInRole(Submitter) || User.IsInRole(Developer)
+                List<TicketViewModel> model = User.IsInRole(Submitter) || User.IsInRole(Developer)
                     ? DbContext.Tickets
                             .Where(p => p.Project.Users.Any(q => q.Id == userId))
-                            .Select(p => new CreateTicketViewModel
+                            .Select(p => new TicketViewModel
                             {
                                 Id = p.Id,
                                 Title = p.Title,
@@ -366,7 +368,7 @@ namespace BugTracker.Controllers
                                 AssignedToName = p.AssignedTo.DisplayName
                             }).ToList()
                     : DbContext.Tickets
-                            .Select(p => new CreateTicketViewModel
+                            .Select(p => new TicketViewModel
                             {
                                 Id = p.Id,
                                 Title = p.Title,
@@ -396,10 +398,10 @@ namespace BugTracker.Controllers
             }
             else
             {
-                List<CreateTicketViewModel> model = User.IsInRole(Submitter)
+                List<TicketViewModel> model = User.IsInRole(Submitter)
                     ? DbContext.Tickets
                     .Where(p => p.CreatedBy.Id == userId)
-                    .Select(p => new CreateTicketViewModel
+                    .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
                         Title = p.Title,
@@ -415,7 +417,7 @@ namespace BugTracker.Controllers
                     }).ToList()
                     : DbContext.Tickets
                     .Where(p => p.AssignedTo.Id == userId)
-                    .Select(p => new CreateTicketViewModel
+                    .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
                         Title = p.Title,

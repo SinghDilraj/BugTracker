@@ -1,4 +1,4 @@
-﻿@model CreateTicketViewModel
+﻿@model TicketViewModel
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
@@ -119,30 +119,36 @@
     </div>
 </div>
 <hr />
-<hr />
-<hr />
 <div class="container mt-5" id="content">
     <div class="row">
         <div class="col-6">
             <h4 class="text-center">Comments</h4>
-            @*@foreach (var comment in Model.Comments)
-                {
-                    <div class="card">
-                        <div class="card-title">@comment.Title</div>
-                        <div class="card-subtitle">@comment.CreatedBy.Email</div>
-                    </div>
-                }*@
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="col-md-7 border border-primary rounded-left rounded-right rounded-lg mb-2">
+                    @if (!string.IsNullOrEmpty(comment.CreatedBy.UserName))
+                    {
+                        <pre class="text-muted">By:- @comment.CreatedBy.UserName</pre>
+                    }
+                    <span class="text-info">
+                        @comment.Title
+                    </span>
+                </div>
+            }
             @Html.Partial("~/Views/Comments/_AddComment.cshtml", new CommentViewModel() { Id = Model.Id })
         </div>
         <div class="col-6">
             <h4 class="text-center">Attachments</h4>
-            @*@foreach (var attachment in Model.Attachments)
-                {
-                    <div class="card">
-                        <div class="card-title"><a href="@attachment.fileUrl">@attachment.fileName</a></div>
-                        <div class="card-subtitle">@attachment.CreatedBy.Email</div>
-                    </div>
-                }*@
+            @foreach (var attachment in Model.Attachments)
+            {
+                <div class="col-md-7 border border-primary rounded-left rounded-right rounded-lg mb-2">
+                    @if (!string.IsNullOrEmpty(attachment.CreatedBy.UserName))
+                    {
+                        <pre class="text-muted">By:- @attachment.CreatedBy.UserName</pre>
+                    }
+                    <span class="text-info"><a href="@attachment.FileUrl" download="">@attachment.FileName</a></span>
+                </div>
+            }
             @Html.Partial("~/Views/Attachments/_AddAttachment.cshtml", new AttachmentViewModel() { Id = Model.Id })
         </div>
     </div>

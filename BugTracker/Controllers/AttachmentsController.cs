@@ -1,8 +1,11 @@
-﻿using BugTracker.Models;
+﻿using Blog.Models.Extensions;
+using BugTracker.Models;
 using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace BugTracker.Controllers
@@ -20,13 +23,29 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAttachment(AttachmentViewModel model)
+        public ActionResult AddAttachment(AttachmentViewModel model, int ticketId)
         {
+            if (!Directory.Exists(FileHelper.MappedUploadFolder))
+            {
+                Directory.CreateDirectory(FileHelper.MappedUploadFolder);
+            }
+
+            string fileName = model.file.FileName;
+            string fullPathWithName = FileHelper.MappedUploadFolder + fileName;
+
+            model.file.SaveAs(fullPathWithName);
+
             Attachment attachment = new Attachment()
             {
-                FileUrl = model.file.FileName,
-                CreatedBy = DefaultUserManager.FindById(User.Identity.GetUserId())
+                FileUrl = FileHelper.UploadFolder + fileName,
+                FileName = fileName,
+                CreatedBy = DefaultUserManager.FindById(User.Identity.GetUserId()),
+                Ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId)
             };
+
+            DbContext.Attachments.Add(attachment);
+
+            DbContext.SaveChanges();
 
             return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
         }

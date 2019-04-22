@@ -7,7 +7,7 @@ using System.Web;
 
 namespace BugTracker.Models.ViewModels
 {
-    public class CreateTicketViewModel
+    public class TicketViewModel
     {
         [Required]
         public string Title { get; set; }
@@ -35,7 +35,7 @@ namespace BugTracker.Models.ViewModels
         public string CreatedByName { get; set; }
         public string AssignedToName { get; set; }
         public string ProjectName { get; set; }
-        public List<CommentViewModel> Comments { get; set; }
-        public List<AttachmentViewModel> Attachments { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<Attachment> Attachments { get; set; }
     }
 }

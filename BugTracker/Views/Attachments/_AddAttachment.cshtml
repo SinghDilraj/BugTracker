@@ -1,16 +1,13 @@
 ﻿@model AttachmentViewModel
 
-@using (Html.BeginForm("AddAttachment", "Attachments", new { ticketId = Model.Id }, FormMethod.Post, new { enctype="multipart/form-data"}))
+@using (Html.BeginForm("AddAttachment", "Attachments", new { ticketId = Model.Id }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="form-group">
-        @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2" })
-        <input type="file" />
-        @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+        <input type="file"/>
+        @Html.ValidationMessageFor(p => p.file)
     </div>
-
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Add" class="btn btn-default" />
-        </div>
+        <button type="submit" class="btn btn-success">Add</button>
     </div>
+    @Html.Hidden("Id", Model.Id)
 }
