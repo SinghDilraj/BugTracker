@@ -111,6 +111,16 @@ namespace BugTracker.Controllers
             }
         }
 
+        public async Task<ActionResult> DemoLoginAsync(string email)
+        {
+            SignInStatus result = await SignInManager.PasswordSignInAsync(email, "Password-1", false, shouldLockout: false);
+
+            return result
+                   == SignInStatus.Success
+                ? RedirectToAction(nameof(HomeController.Index), "Home")
+                : RedirectToAction(nameof(AccountController.Login));
+        }
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

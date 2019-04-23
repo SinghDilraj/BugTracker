@@ -67,7 +67,7 @@ namespace BugTracker.Migrations
                 p => p.UserName == "admin@mybugtracker.com"))
             {
                 admin = new ApplicationUser();
-                admin.UserName = admin.Email = admin.DisplayName = "admin@mybugtracker.com";
+                admin.UserName = admin.Email = "admin@mybugtracker.com";
                 admin.EmailConfirmed = true;
                 admin.DisplayName = "Admin User";
                 userManager.Create(admin, "Password-1");
@@ -83,6 +83,112 @@ namespace BugTracker.Migrations
             if (!userManager.IsInRole(admin.Id, "Admin"))
             {
                 userManager.AddToRole(admin.Id, "Admin");
+            }
+
+            //Demo Logins users
+
+            //demo admin
+            ApplicationUser demoAdmin;
+
+            if (!context.Users.Any(p => p.Email == "DemoAdmin@mybugtracker.com"))
+            {
+                demoAdmin = new ApplicationUser
+                {
+                    Email = "DemoAdmin@mybugtracker.com",
+                    UserName = "DemoAdmin@mybugtracker.com",
+                    DisplayName = "DemoAdmin@mybugtracker.com",
+                    EmailConfirmed = true
+                };
+
+                userManager.Create(demoAdmin, "Password-1");
+            }
+            else
+            {
+                demoAdmin = context.Users.First(p => p.Email == "DemoAdmin@mybugtracker.com");
+            }
+
+            //assigning admin role if not assigned
+            if (!userManager.IsInRole(demoAdmin.Id, "Admin"))
+            {
+                userManager.AddToRole(demoAdmin.Id, "Admin");
+            }
+
+            //demo project manager
+            ApplicationUser demoProjectManager;
+
+            if (!context.Users.Any(p => p.Email == "DemoProjectManager@mybugtracker.com"))
+            {
+                demoProjectManager = new ApplicationUser
+                {
+                    Email = "DemoProjectManager@mybugtracker.com",
+                    UserName = "DemoProjectManager@mybugtracker.com",
+                    DisplayName = "DemoProjectManager@mybugtracker.com",
+                    EmailConfirmed = true
+                };
+
+                userManager.Create(demoProjectManager, "Password-1");
+            }
+            else
+            {
+                demoProjectManager = context.Users.First(p => p.Email == "DemoProjectManager@mybugtracker.com");
+            }
+
+            //assigning project manager role if not assigned
+            if (!userManager.IsInRole(demoProjectManager.Id, "Project Manager"))
+            {
+                userManager.AddToRole(demoProjectManager.Id, "Project Manager");
+            }
+
+            //demo submitter
+            ApplicationUser demoSubmitter;
+
+            if (!context.Users.Any(p => p.Email == "DemoSubmitter@mybugtracker.com"))
+            {
+                demoSubmitter = new ApplicationUser
+                {
+                    Email = "DemoSubmitter@mybugtracker.com",
+                    UserName = "DemoSubmitter@mybugtracker.com",
+                    DisplayName = "DemoSubmitter@mybugtracker.com",
+                    EmailConfirmed = true
+                };
+
+                userManager.Create(demoSubmitter, "Password-1");
+            }
+            else
+            {
+                demoSubmitter = context.Users.First(p => p.Email == "DemoSubmitter@mybugtracker.com");
+            }
+
+            //assigning submitter role if not assigned
+            if (!userManager.IsInRole(demoSubmitter.Id, "Submitter"))
+            {
+                userManager.AddToRole(demoSubmitter.Id, "Submitter");
+            }
+
+            //demo developer
+            ApplicationUser demoDeveloper;
+
+            if (!context.Users.Any(p => p.Email == "DemoDeveloper@mybugtracker.com"))
+            {
+                demoDeveloper = new ApplicationUser
+                {
+                    Email = "DemoDeveloper@mybugtracker.com",
+                    UserName = "DemoDeveloper@mybugtracker.com",
+                    DisplayName = "DemoDeveloper@mybugtracker.com",
+                    EmailConfirmed = true
+                };
+
+                userManager.Create(demoDeveloper, "Password-1");
+            }
+            else
+            {
+                demoDeveloper = context.Users.First(p => p.Email == "DemoDeveloper@mybugtracker.com");
+            }
+
+            //assigning submitter role if not assigned
+            if (!userManager.IsInRole(demoDeveloper.Id, "Developer"))
+            {
+                userManager.AddToRole(demoDeveloper.Id, "Developer");
             }
 
             //Seeding Ticket Types, Priorities and Statuses.

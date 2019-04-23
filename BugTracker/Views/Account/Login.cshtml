@@ -47,14 +47,9 @@
                         <span>
                             @Html.ActionLink("Forgot your password?", "ForgotPassword", null, new { @class = "btn btn-warning" })
                         </span>
-                    </div>
-                </div>
-
-                <div class="form-group mt-5">
-                    <div class="col-md-offset-2 col-md-10">
-                        <p>
+                        <span>
                             @Html.ActionLink("Register as a new user", "Register", null, new { @class = "btn btn-success" })
-                        </p>
+                        </span>
                     </div>
                 </div>
             }
@@ -62,7 +57,28 @@
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            @* External Login *@
+            @*@Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })*@
+
+            @* Demo Login *@
+            <h4>Demo Logins</h4>
+            <hr />
+
+            <form>
+                <div class="form-group">
+                    <a href="@Url.Action("DemoLogin", "Account", new {email = "DemoAdmin@mybugtracker.com" })" class="btn btn-success">Demo Admin</a>
+                </div>
+                <div class="form-group">
+                    <a href="@Url.Action("DemoLogin", "Account", new {email = "DemoProjectManager@mybugtracker.com" })" class="btn btn-success">Demo Project Manager</a>
+                </div>
+                <div class="form-group">
+                    <a href="@Url.Action("DemoLogin", "Account", new {email = "DemoSubmitter@mybugtracker.com" })" class="btn btn-primary">Demo Submitter</a>
+                </div>
+                <div class="form-group">
+                    <a href="@Url.Action("DemoLogin", "Account", new {email = "DemoDeveloper@mybugtracker.com" })" class="btn btn-primary">Demo Developer</a>
+                </div>
+            </form>
+
         </section>
     </div>
 </div>
