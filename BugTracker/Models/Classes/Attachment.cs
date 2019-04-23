@@ -11,7 +11,9 @@ namespace BugTracker.Models.Classes
         public string FileUrl { get; set; }
         public string FileName { get; set; }
         public virtual Ticket Ticket { get; set; }
+        public int TicketId { get; set; }
         public virtual ApplicationUser CreatedBy { get; set; }
+        public string CreatedById { get; set; }
         public DateTime DateCreated { get; set; }
 
         public Attachment()

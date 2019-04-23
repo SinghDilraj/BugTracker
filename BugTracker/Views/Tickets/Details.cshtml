@@ -133,6 +133,27 @@
                     <span class="text-info">
                         @comment.Title
                     </span>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                    {
+                        <span class="ml-4">
+                            @Html.ActionLink("Edit", "EditComment", "Comments", new { commentId = comment.Id }, new { @class = "text-warning" })
+                        </span>
+                        <span class="ml-4">
+                            @Html.ActionLink("Delete ", "DeleteComment", "Comments", new { commentId = comment.Id }, new { @class = "text-danger" })
+                        </span>
+                    }
+                    else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                    {
+                        if (comment.CreatedBy.Email == User.Identity.Name)
+                        {
+                            <span class="ml-4">
+                                @Html.ActionLink("Edit", "EditComment", "Comments", new { commentId = comment.Id }, new { @class = "text-warning" })
+                            </span>
+                            <span class="ml-4">
+                                @Html.ActionLink("Delete ", "DeleteComment", "Comments", new { commentId = comment.Id }, new { @class = "text-danger" })
+                            </span>
+                        }
+                    }
                 </div>
             }
             @Html.Partial("~/Views/Comments/_AddComment.cshtml", new CommentViewModel() { Id = Model.Id })
@@ -147,6 +168,21 @@
                         <pre class="text-muted">By:- @attachment.CreatedBy.UserName</pre>
                     }
                     <span class="text-info"><a href="@attachment.FileUrl" download="">@attachment.FileName</a></span>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                    {
+                        <span class="ml-4">
+                            @Html.ActionLink("Delete", "DeleteAttachment", "Attachments", new { attachmentId = attachment.Id }, new { @class = "text-danger" })
+                        </span>
+                    }
+                    else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                    {
+                        if (attachment.CreatedBy.Email == User.Identity.Name)
+                        {
+                            <span class="ml-4">
+                                @Html.ActionLink("Delete ", "DeleteAttachment", "Attachments", new { attachmentId = attachment.Id }, new { @class = "text-danger" })
+                            </span>
+                        }
+                    }
                 </div>
             }
             @Html.Partial("~/Views/Attachments/_AddAttachment.cshtml", new AttachmentViewModel() { Id = Model.Id })

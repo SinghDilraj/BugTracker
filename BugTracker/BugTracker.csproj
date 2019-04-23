@@ -1821,6 +1821,7 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Comments\_AddComment.cshtml" />
     <Content Include="Views\Attachments\_AddAttachment.cshtml" />
+    <Content Include="Views\Comments\EditComment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
