@@ -23,11 +23,5 @@ namespace BugTracker.Controllers.HelperController
 
             DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
         }
-
-        public void Populate()
-        {
-            ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
-
-        }
     }
 }
