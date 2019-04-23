@@ -111,7 +111,8 @@ namespace BugTracker.Controllers
             }
         }
 
-        public async Task<ActionResult> DemoLoginAsync(string email)
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoLogin(string email)
         {
             SignInStatus result = await SignInManager.PasswordSignInAsync(email, "Password-1", false, shouldLockout: false);
 
