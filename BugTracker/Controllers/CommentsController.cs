@@ -1,29 +1,15 @@
-﻿using BugTracker.Models;
+﻿using BugTracker.Controllers.HelperController;
+using BugTracker.Models;
 using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
-    public class CommentsController : Controller
+    public class CommentsController : BaseController
     {
-        private readonly ApplicationDbContext DbContext;
-        private readonly UserManager<ApplicationUser> DefaultUserManager;
-        private const string Submitter = "Submitter";
-        private const string Admin = "Admin";
-        private const string ProjectManager = "Project Manager";
-        private const string Developer = "Developer";
-
-        public CommentsController()
-        {
-            DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
-        }
-
         [HttpPost]
         public ActionResult AddComment(CommentViewModel model, int ticketId)
         {

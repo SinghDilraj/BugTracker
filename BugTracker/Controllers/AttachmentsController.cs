@@ -1,4 +1,5 @@
 ﻿using Blog.Models.Extensions;
+using BugTracker.Controllers.HelperController;
 using BugTracker.Models;
 using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
@@ -10,22 +11,8 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
-    public class AttachmentsController : Controller
+    public class AttachmentsController : BaseController
     {
-        private readonly ApplicationDbContext DbContext;
-        private readonly UserManager<ApplicationUser> DefaultUserManager;
-        private const string Submitter = "Submitter";
-        private const string Admin = "Admin";
-        private const string ProjectManager = "Project Manager";
-        private const string Developer = "Developer";
-
-        public AttachmentsController()
-        {
-            DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
-        }
-
         [HttpPost]
         public ActionResult AddAttachment(AttachmentViewModel model, int ticketId)
         {

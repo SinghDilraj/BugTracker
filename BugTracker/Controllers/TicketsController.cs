@@ -7,29 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using BugTracker.Controllers.HelperController;
 
 namespace BugTracker.Controllers
 {
     [Authorize]
-    public class TicketsController : Controller
+    public class TicketsController : BaseController
     {
-        private const string Submitter = "Submitter";
-        private const string Admin = "Admin";
-        private const string ProjectManager = "Project Manager";
-        private const string Developer = "Developer";
-        private const string AdminAndProjectManagerAndSubmitter = "Admin, Project Manager, Submitter";
-        private const string AdminAndProjectManager = "Admin, Project Manager";
-        private const string SubmitterAndDeveloper = "Submitter, Developer";
-        private readonly ApplicationDbContext DbContext;
-        private readonly UserManager<ApplicationUser> DefaultUserManager;
-
-        public TicketsController()
-        {
-            DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
-        }
-
         [Authorize(Roles = Submitter)]
         [HttpGet]
         public ActionResult CreateTicket()

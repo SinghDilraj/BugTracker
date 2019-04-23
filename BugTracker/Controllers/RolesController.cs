@@ -1,4 +1,5 @@
-﻿using BugTracker.Models;
+﻿using BugTracker.Controllers.HelperController;
+using BugTracker.Models;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -7,22 +8,8 @@ using System.Web.Mvc;
 namespace BugTracker.Controllers
 {
     [Authorize]
-    public class RolesController : Controller
+    public class RolesController : BaseController
     {
-        private const string Submitter = "Submitter";
-        private const string Admin = "Admin";
-        private const string ProjectManager = "Project Manager";
-        private const string Developer = "Developer";
-        private readonly ApplicationDbContext DbContext;
-        private readonly UserManager<ApplicationUser> DefaultUserManager;
-
-        public RolesController()
-        {
-            DbContext = new ApplicationDbContext();
-
-            DefaultUserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
-        }
-
         [Authorize(Roles = Admin)]
         [HttpGet]
         public ActionResult Roles(UserManagerRolesViewModel model, string id)

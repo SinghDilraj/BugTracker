@@ -1,4 +1,5 @@
-﻿using BugTracker.Models;
+﻿using BugTracker.Controllers.HelperController;
+using BugTracker.Models;
 using BugTracker.Models.Classes;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -10,16 +11,8 @@ using System.Web.Mvc;
 namespace BugTracker.Controllers
 {
     [Authorize]
-    public class ProjectsController : Controller
+    public class ProjectsController : BaseController
     {
-        private const string AdminAndProjectManager = "Admin, Project Manager";
-        private readonly ApplicationDbContext DbContext;
-
-        public ProjectsController()
-        {
-            DbContext = new ApplicationDbContext();
-        }
-
         [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
         public ActionResult CreateProject()

@@ -1,4 +1,4 @@
-﻿using BugTracker.Models;
+﻿using BugTracker.Controllers.HelperController;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
@@ -8,18 +8,8 @@ using System.Web.Mvc;
 namespace BugTracker.Controllers
 {
     [Authorize]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
-        private const string Admin = "Admin";
-        private const string AdminAndProjectManager = "Admin, Project Manager";
-        private const string Developer = "Developer";
-        private readonly ApplicationDbContext DbContext;
-
-        public UsersController()
-        {
-            DbContext = new ApplicationDbContext();
-        }
-
         [Authorize(Roles = Admin)]
         public ActionResult UserManager()
         {
