@@ -402,8 +402,8 @@ namespace BugTracker.Controllers
                         Description = p.Description,
                         DateCreated = p.DateCreated,
                         DateUpdated = p.DateUpdated,
-                        CreatedByName = p.CreatedBy.UserName,
-                        AssignedToName = p.AssignedTo.UserName,
+                        CreatedByName = p.CreatedBy.Email,
+                        AssignedToName = p.AssignedTo.Email,
                         TypeName = p.Type.Name,
                         PriorityName = p.Priority.Name,
                         StatusName = p.Status.Name,
@@ -444,8 +444,8 @@ namespace BugTracker.Controllers
                                 TypeName = p.Type.Name,
                                 PriorityName = p.Priority.Name,
                                 StatusName = p.Status.Name,
-                                CreatedByName = p.CreatedBy.DisplayName,
-                                AssignedToName = p.AssignedTo.DisplayName
+                                CreatedByName = p.CreatedBy.Email,
+                                AssignedToName = p.AssignedTo.Email
                             }).ToList()
                     : DbContext.Tickets
                             .Select(p => new TicketViewModel
@@ -459,8 +459,8 @@ namespace BugTracker.Controllers
                                 TypeName = p.Type.Name,
                                 PriorityName = p.Priority.Name,
                                 StatusName = p.Status.Name,
-                                CreatedByName = p.CreatedBy.DisplayName,
-                                AssignedToName = p.AssignedTo.DisplayName
+                                CreatedByName = p.CreatedBy.Email,
+                                AssignedToName = p.AssignedTo.Email
                             }).ToList();
                 return View(model);
             }
@@ -492,8 +492,8 @@ namespace BugTracker.Controllers
                         TypeName = p.Type.Name,
                         PriorityName = p.Priority.Name,
                         StatusName = p.Status.Name,
-                        CreatedByName = p.CreatedBy.DisplayName,
-                        AssignedToName = p.AssignedTo.DisplayName
+                        CreatedByName = p.CreatedBy.Email,
+                        AssignedToName = p.AssignedTo.Email
                     }).ToList()
                     : DbContext.Tickets
                     .Where(p => p.AssignedTo.Id == userId)
@@ -508,8 +508,8 @@ namespace BugTracker.Controllers
                         TypeName = p.Type.Name,
                         PriorityName = p.Priority.Name,
                         StatusName = p.Status.Name,
-                        CreatedByName = p.CreatedBy.DisplayName,
-                        AssignedToName = p.AssignedTo.DisplayName
+                        CreatedByName = p.CreatedBy.Email,
+                        AssignedToName = p.AssignedTo.Email
                     }).ToList();
                 return View(model);
             }
