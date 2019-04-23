@@ -29,7 +29,7 @@ namespace BugTracker.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(TicketsController.Details), "Ticket", new { ticketId });
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId });
             }
 
             ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
@@ -49,7 +49,7 @@ namespace BugTracker.Controllers
 
                 DbContext.SaveChanges();
 
-                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
             }
             else if (User.IsInRole(Submitter))
             {
@@ -59,7 +59,7 @@ namespace BugTracker.Controllers
 
                     DbContext.SaveChanges();
 
-                    return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace BugTracker.Controllers
 
                     DbContext.SaveChanges();
 
-                    return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace BugTracker.Controllers
             }
             else
             {
-                return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
             }
         }
 
@@ -111,11 +111,11 @@ namespace BugTracker.Controllers
                     }
                 }
 
-                return RedirectToAction("Details", "Ticket", new { ticketId = comment.Ticket.Id });
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = comment.TicketId });
             }
             else
             {
-                return RedirectToAction("Details", "Ticket");
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets");
             }
         }
 
@@ -149,17 +149,17 @@ namespace BugTracker.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Details", "Ticket", new { ticketId = comment.Ticket.Id });
+                        return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = comment.TicketId });
                     }
                 }
                 else
                 {
-                    return RedirectToAction("Details", "Ticket", new { ticketId = comment.Ticket.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = comment.TicketId });
                 }
             }
             else
             {
-                return RedirectToAction("Details", "Ticket");
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets");
             }
         }
 
@@ -173,22 +173,19 @@ namespace BugTracker.Controllers
                 if (ModelState.IsValid)
                 {
                     comment.Title = model.Title;
-                    comment.Id = model.Id;
-
-                    DbContext.Comments.Add(comment);
 
                     DbContext.SaveChanges();
 
-                    return RedirectToAction("Details", "Ticket", new { ticketId = comment.Ticket.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = comment.TicketId });
                 }
                 else
                 {
-                    return RedirectToAction("Details", "Ticket", new { ticketId = comment.Ticket.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = comment.TicketId });
                 }
             }
             else
             {
-                return RedirectToAction("Details", "Ticket");
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets");
             }
         }
     }

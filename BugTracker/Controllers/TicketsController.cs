@@ -49,48 +49,15 @@ namespace BugTracker.Controllers
                     .Select(p => p)
                     .ToList();
 
-                List<SelectListItem> projectList = new List<SelectListItem>();
-
-                foreach (Project project in projects)
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = project.Name,
-                        Value = project.Id.ToString()
-                    };
-
-                    projectList.Add(item);
-                }
+                SelectList projectList = new SelectList(projects, "Name", "Id");
 
                 ViewData["projects"] = projectList;
 
-                List<SelectListItem> typeList = new List<SelectListItem>();
-
-                foreach (TicketType type in DbContext.TicketTypes.Select(p => p))
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = type.Name,
-                        Value = type.Id.ToString()
-                    };
-
-                    typeList.Add(item);
-                }
+                SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
 
                 ViewData["types"] = typeList;
 
-                List<SelectListItem> priorityList = new List<SelectListItem>();
-
-                foreach (TicketPriority priority in DbContext.TicketPriorities.Select(p => p))
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = priority.Name,
-                        Value = priority.Id.ToString()
-                    };
-
-                    priorityList.Add(item);
-                }
+                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
 
                 ViewData["priorities"] = priorityList;
 
@@ -102,22 +69,39 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult CreateTicket(TicketViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-
             string userId = User.Identity.GetUserId();
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return View(model);
             }
             else
             {
-                int projectId = Convert.ToInt32(model.ProjectId);
+                if (!ModelState.IsValid)
+                {
+                    List<Project> projects = DbContext.Projects
+                        .Where(p => p.Users.Any(q => q.Id == userId))
+                        .Select(p => p)
+                        .ToList();
+
+                    SelectList projectList = new SelectList(projects, "Name", "Id");
+
+                    ViewData["projects"] = projectList;
+
+                    SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
+
+                    ViewData["types"] = typeList;
+
+                    SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
+
+                    ViewData["priorities"] = priorityList;
+
+                    return View(model);
+                }
+
+                int projectId = model.ProjectId;
                 int priorityId = Convert.ToInt32(model.PriorityId);
-                int typeId = Convert.ToInt32(model.TypeId);
+                int typeId = model.TypeId;
 
                 Ticket ticket = new Ticket()
                 {
@@ -165,67 +149,23 @@ namespace BugTracker.Controllers
                 };
 
                 List<Project> projects = DbContext.Projects
-                    .Where(p => p.Users.Any(q => q.Id == userId))
-                    .Select(p => p)
-                    .ToList();
+                        .Where(p => p.Users.Any(q => q.Id == userId))
+                        .Select(p => p)
+                        .ToList();
 
-                List<SelectListItem> projectList = new List<SelectListItem>();
-
-                foreach (Project project in projects)
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = project.Name,
-                        Value = project.Id.ToString()
-                    };
-
-                    projectList.Add(item);
-                }
+                SelectList projectList = new SelectList(projects, "Name", "Id");
 
                 ViewData["projects"] = projectList;
 
-                List<SelectListItem> typeList = new List<SelectListItem>();
-
-                foreach (TicketType type in DbContext.TicketTypes.Select(p => p))
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = type.Name,
-                        Value = type.Id.ToString()
-                    };
-
-                    typeList.Add(item);
-                }
+                SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
 
                 ViewData["types"] = typeList;
 
-                List<SelectListItem> priorityList = new List<SelectListItem>();
-
-                foreach (TicketPriority priority in DbContext.TicketPriorities.Select(p => p))
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = priority.Name,
-                        Value = priority.Id.ToString()
-                    };
-
-                    priorityList.Add(item);
-                }
+                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
 
                 ViewData["priorities"] = priorityList;
 
-                List<SelectListItem> statusList = new List<SelectListItem>();
-
-                foreach (TicketStatus status in DbContext.TicketStatuses.Select(p => p))
-                {
-                    SelectListItem item = new SelectListItem
-                    {
-                        Text = status.Name,
-                        Value = status.Id.ToString()
-                    };
-
-                    statusList.Add(item);
-                }
+                SelectList statusList = new SelectList(DbContext.TicketStatuses, "Name", "Id");
 
                 ViewData["statuses"] = statusList;
 
@@ -267,9 +207,32 @@ namespace BugTracker.Controllers
         [HttpPost]
         public ActionResult EditTicket(TicketViewModel model, int? ticketId)
         {
+            string userId = User.Identity.GetUserId();
+
             if (!ModelState.IsValid || !ticketId.HasValue)
             {
-                return RedirectToAction(nameof(TicketsController.AllTickets));
+                List<Project> projects = DbContext.Projects
+                        .Where(p => p.Users.Any(q => q.Id == userId))
+                        .Select(p => p)
+                        .ToList();
+
+                SelectList projectList = new SelectList(projects, "Name", "Id");
+
+                ViewData["projects"] = projectList;
+
+                SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
+
+                ViewData["types"] = typeList;
+
+                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
+
+                ViewData["priorities"] = priorityList;
+
+                SelectList statusList = new SelectList(DbContext.TicketStatuses, "Name", "Id");
+
+                ViewData["statuses"] = statusList;
+
+                return View(model);
             }
             else
             {
@@ -389,7 +352,7 @@ namespace BugTracker.Controllers
         {
             if (!ticketId.HasValue)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(TicketsController.AllTickets), "Tickets");
             }
             else
             {

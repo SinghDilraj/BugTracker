@@ -59,7 +59,7 @@ namespace BugTracker.Controllers
 
                     DbContext.SaveChanges();
 
-                    return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
                 }
                 else if (User.IsInRole(Submitter))
                 {
@@ -69,7 +69,7 @@ namespace BugTracker.Controllers
 
                         DbContext.SaveChanges();
 
-                        return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                        return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
                     }
                     else
                     {
@@ -84,7 +84,7 @@ namespace BugTracker.Controllers
 
                         DbContext.SaveChanges();
 
-                        return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                        return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
                     }
                     else
                     {
@@ -93,12 +93,12 @@ namespace BugTracker.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Details", "Tickets", new { ticketId = model.Id });
+                    return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id });
                 }
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = model.Id});
             }
         }
 
@@ -126,11 +126,11 @@ namespace BugTracker.Controllers
                     }
                 }
 
-                return RedirectToAction("Details", "Ticket", new { ticketId = attachment.Ticket.Id });
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets", new { ticketId = attachment.TicketId });
             }
             else
             {
-                return RedirectToAction("Details", "Ticket");
+                return RedirectToAction(nameof(TicketsController.Details), "Tickets");
             }
         }
     }

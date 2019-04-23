@@ -14,7 +14,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped display" id="dataTable">
+            <table class="table table-sm table-bordered table-striped display" id="dataTable">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -71,14 +71,14 @@
                                 <td>@ticket.DateUpdated</td>
                             }
                             <td>@ticket.ProjectName</td>
-                            <td>@ticket.CreatedByName</td>
+                            <td><small>@ticket.CreatedByName</small></td>
                             @if (string.IsNullOrEmpty(ticket.AssignedToName))
                             {
                                 <td>None</td>
                             }
                             else
                             {
-                                <td>@ticket.AssignedToName</td>
+                                <td><small>@ticket.AssignedToName</small></td>
                             }
 
                             <td>@ticket.TypeName</td>
