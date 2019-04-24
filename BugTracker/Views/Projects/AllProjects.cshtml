@@ -49,32 +49,32 @@
                 <tbody class="text-primary">
                     @foreach (var project in Model)
                     {
-                    <tr>
-                        <td>@project.Name</td>
-                        <td>@project.Users.Count()</td>
-                        <td>@project.Tickets.Count()</td>
-                        <td>@project.DateCreated</td>
+                        <tr>
+                            <td>@project.Name</td>
+                            <td>@project.Users.Count()</td>
+                            <td>@project.Tickets.Count()</td>
+                            <td>@project.DateCreated</td>
 
-                        @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
-                        {
-                            <td>never</td>
-                        }
-                        else
-                        {
-                            <td>@project.DateUpdated</td>
-                        }
-                        <td><a href="@Url.Action("EditProject", "Projects", new {id = project.Id})"><i class="fa fa-wrench ml-3"></i></a></td>
-                        <td><a href="@Url.Action("DeleteProject", "Projects", new {id = project.Id})"><i class="fa fa-trash ml-4"></i></a></td>
-                        <td><a href="@Url.Action("AllUsersForProjects", "Users", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
-                        @if (project.Archive)
-                        {
-                            <td><i class="fa fa-archive ml-4"><i class="fa fa-check"></i></i></td>
-                        }
-                        else
-                        {
-                            <td><a href="@Url.Action("ArchiveProjects", "Projects", new {id = project.Id})"><i class="fa fa-archive ml-4"></i></a></td>
-                        }
-                    </tr>
+                            @if (string.IsNullOrEmpty(project.DateUpdated.ToString()))
+                            {
+                                <td>never</td>
+                            }
+                            else
+                            {
+                                <td>@project.DateUpdated</td>
+                            }
+                            <td><a href="@Url.Action("EditProject", "Projects", new {id = project.Id})"><i class="fa fa-wrench ml-3"></i></a></td>
+                            <td><a href="@Url.Action("DeleteProject", "Projects", new {id = project.Id})"><i class="fa fa-trash ml-4"></i></a></td>
+                            <td><a href="@Url.Action("AllUsersForProjects", "Users", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
+                            @if (project.Archive)
+                            {
+                                <td><a href="@Url.Action("Archive", "Projects", new {projectId = project.Id, add=false})" class="text-danger"><i class="fa fa-archive ml-4"> </i> <i class="fa fa-times"></i></a></td>
+                            }
+                            else
+                            {
+                                <td><a href="@Url.Action("Archive", "Projects", new {projectId = project.Id, add=true})" class="text-success"><i class="fa fa-archive ml-4"> </i> <i class="fa fa-plus"></i></a></td>
+                            }
+                        </tr>
                     }
                 </tbody>
             </table>

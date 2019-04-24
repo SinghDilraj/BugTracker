@@ -45,25 +45,6 @@ namespace BugTracker.Controllers
 
         [Authorize(Roles = AdminAndProjectManager)]
         [HttpGet]
-        public ActionResult AllProjects()
-        {
-            List<HomeProjectViewModel> projects = DbContext.Projects.Select(p =>
-                new HomeProjectViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    DateCreated = p.DateCreated,
-                    DateUpdated = p.DateUpdated,
-                    Users = p.Users,
-                    Tickets = p.Tickets,
-                    Archive = p.Archive
-                }).ToList();
-
-            return View(projects);
-        }
-
-        [Authorize(Roles = AdminAndProjectManager)]
-        [HttpGet]
         public ActionResult EditProject(int? id)
         {
             if (!id.HasValue)
@@ -163,6 +144,44 @@ namespace BugTracker.Controllers
 
                 return RedirectToAction(nameof(UsersController.AllUsersForProjects), "Users");
             }
+        }
+
+        [Authorize(Roles = AdminAndProjectManager)]
+        public ActionResult Archive(int? projectId)
+        {
+            if (projectId.HasValue)
+            {
+                Project project = DbContext.Projects.FirstOrDefault(p => p.Id == projectId);
+
+                project.Archive = true;
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
+            }
+            else
+            {
+                return RedirectToAction(nameof(ProjectsController.AllProjects));
+            }
+        }
+
+        [Authorize(Roles = AdminAndProjectManager)]
+        [HttpGet]
+        public ActionResult AllProjects()
+        {
+            List<HomeProjectViewModel> projects = DbContext.Projects.Select(p =>
+                new HomeProjectViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    DateCreated = p.DateCreated,
+                    DateUpdated = p.DateUpdated,
+                    Users = p.Users,
+                    Tickets = p.Tickets,
+                    Archive = p.Archive
+                }).ToList();
+
+            return View(projects);
         }
 
         [HttpGet]
