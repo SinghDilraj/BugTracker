@@ -1,4 +1,5 @@
-﻿<!-- Breadcrumbs-->
+﻿@model HomeTicketAndProjectsViewModel
+<!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="@Url.Action("Index", "Home")">Dashboard</a>
@@ -11,7 +12,91 @@
             <h1 class="display-4">Welcome To BugTracker</h1>
             <p class="lead">This is a simple Web Application used for tracking Bugs, Feautures and Updates in a Project.</p>
             <hr class="my-4">
-            <p>You can Easily Create Projects, Add Members to a Project, Generate Tickets for it and Keep Track of Your Project History.</p>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-dark">
+                        <div class="card-block">
+                            <div class="row align-items-end">
+                                <div class="col-8 ml-3 mt-3">
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Poroject Manager"))
+                                    {
+                                        <div>
+                                            <span class="text-white lead">@Model.Projects.Count</span>
+                                            <span class="text-white lead m-b-0">All Projects</span>
+                                        </div>
+
+                                        <div>
+                                            <span class="text-white lead">@Model.Projects.Where(p => p.Users.Any(m => m.Id == User.Identity.GetUserId())).Count()</span>
+                                            <span class="text-white lead m-b-0">My Projects</span>
+                                        </div>
+
+                                    }
+                                    else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                    {
+                                        <div>
+                                            <span class="text-white lead">@Model.Projects.Count</span>
+                                            <span class="text-white lead m-b-0">My Projects</span>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                            {
+                                <h6 class="text-white m-b-0"><a href="@Url.Action("AllProjects", "Projects")">All Projects</a></h6>
+                                <h6 class="text-white m-b-0"><a href="@Url.Action("MyProjects", "Projects")">My Projects</a></h6>
+
+                            }
+                            else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                            {
+                                <h6 class="text-white m-b-0"><a href="@Url.Action("MyProjects", "Projects")">My Projects</a></h6>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-dark">
+                        <div class="card-block">
+                            <div class="row align-items-end">
+                                <div class="col-8 ml-3 mt-3">
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                                    {
+                                        <div>
+                                            <span class="text-white lead">@Model.Tickets.Where(p => p.Status.Name == "Open").Count()</span>
+                                            <span class="text-white lead m-b-0">Open Tickets</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-white lead">@Model.Tickets.Where(p => p.Status.Name == "Resolved").Count()</span>
+                                            <span class="text-white lead m-b-0">Resolved Tickets</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-white lead">@Model.Tickets.Where(p => p.Status.Name == "Closed").Count()</span>
+                                            <span class="text-white lead m-b-0">Closed Tickets</span>
+                                        </div>
+                                    }
+                                    else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                                    {
+                                        <div><span class="text-white lead">@Model.Tickets.Count</span></div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                            {
+                                <h4 class="text-white m-b-0"><a href="@Url.Action("AllTickets", "Tickets")">All Tickets</a></h4>
+                            }
+                            else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+                            {
+                                <h6 class="text-white m-b-0"><a href="@Url.Action("MyTickets", "Tickets")">My Tickets</a></h6>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

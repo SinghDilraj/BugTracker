@@ -6,7 +6,7 @@ using System.Web;
 
 namespace BugTracker.Models.ViewModels
 {
-    public class LayoutViewModel
+    public class HomeTicketAndProjectsViewModel
     {
         public List<Project> Projects { get; set; }
         public List<Ticket> Tickets { get; set; }
