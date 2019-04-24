@@ -55,7 +55,8 @@ namespace BugTracker.Controllers
                     DateCreated = p.DateCreated,
                     DateUpdated = p.DateUpdated,
                     Users = p.Users,
-                    Tickets = p.Tickets
+                    Tickets = p.Tickets,
+                    Archive = p.Archive
                 }).ToList();
 
             return View(projects);

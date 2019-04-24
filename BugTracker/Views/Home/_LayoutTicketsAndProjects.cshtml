@@ -1,0 +1,54 @@
+﻿@model LayoutViewModel
+
+@if (!User.IsInRole("Submitter"))
+{
+    <li class="nav-item dropdown mx-1">
+        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-bell fa-fw"></i>
+            <span class="badge badge-danger">@Model.Notifications.Count</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
+            <span class="dropdown-item text-muted">Notifications</span>
+            @foreach (Notification notification in Model.Notifications)
+            {
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href=@Url.Action("Details", "Tickets", new { ticketId = notification.TicketId})>@notification.Title</a>
+            }
+        </div>
+    </li>
+}
+<li class="nav-item dropdown mx-1">
+    <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-archive fa-fw"></i>
+        <span class="badge badge-danger">@Model.Projects.Count</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="projectsDropdown">
+        <span class="dropdown-item text-muted">Projects</span>
+        <div class="dropdown-divider"></div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+        {
+            <a class="dropdown-item" href=@Url.Action("AllProjects", "Projects")>All Projects</a>
+            <div class="dropdown-divider"></div>
+        }
+        <a class="dropdown-item" href=@Url.Action("MyProjects", "Projects")>My Projects</a>
+    </div>
+</li>
+<li class="nav-item dropdown mx-1">
+    <a class="nav-link dropdown-toggle" href="#" id="ticketsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-credit-card fa-fw"></i>
+        <span class="badge badge-danger">@Model.Tickets.Count</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="ticketsDropdown">
+        <span class="dropdown-item text-muted">Tickets</span>
+        <div class="dropdown-divider"></div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+        {
+            <a class="dropdown-item" href=@Url.Action("AllTickets", "Tickets")>All Tickets</a>
+            <div class="dropdown-divider"></div>
+        }
+        else if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+        {
+            <a class="dropdown-item" href=@Url.Action("MyTickets", "Tickets")>My Tickets</a>
+        }
+    </div>
+</li>

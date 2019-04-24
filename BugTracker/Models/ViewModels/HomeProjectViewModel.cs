@@ -16,5 +16,6 @@ namespace BugTracker.Models.ViewModels
         public DateTime? DateUpdated { get; set; }
         public List<ApplicationUser> Users { get; set; }
         public List<Ticket> Tickets { get; set; }
+        public bool Archive { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using BugTracker.Controllers.HelperController;
+using BugTracker.Models.ViewModels;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace BugTracker.Controllers
@@ -8,24 +10,37 @@ namespace BugTracker.Controllers
     {
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public PartialViewResult Layout()
+        {
             Models.ApplicationUser user = DefaultUserManager.FindByEmailAsync(User.Identity.Name).Result;
+
+            LayoutViewModel model = new LayoutViewModel();
+
             if (User.IsInRole(Submitter))
             {
-                Session["UserTickets"] = user.CreatedTickets;
-                Session["UserProjects"] = user.Projects;
+                model.Tickets = user.CreatedTickets;
+                model.Projects = user.Projects;
             }
             else if (User.IsInRole(Developer))
             {
-                Session["UserTickets"] = user.AssignedTickets;
-                Session["UserProjects"] = user.Projects;
+                model.Tickets = user.AssignedTickets;
+                model.Projects = user.Projects;
             }
             else
             {
-                Session["UserTickets"] = DbContext.Tickets;
-                Session["UserProjects"] = user.Projects;
+                model.Tickets = DbContext.Tickets.Select(p => p).ToList();
+                model.Projects = DbContext.Projects.Select(p => p).ToList();
             }
 
-            return View();
+            if (User.IsInRole(Admin) || User.IsInRole(ProjectManager) || User.IsInRole(Developer))
+            {
+                model.Notifications = user.Notifications;
+            }
+
+            return PartialView("_LayoutTicketsAndProjects", model);
         }
     }
 }

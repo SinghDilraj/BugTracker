@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using BugTracker.Models.Classes;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BugTracker.Models.Classes;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BugTracker.Models
 {
@@ -16,6 +16,8 @@ namespace BugTracker.Models
         public virtual List<Project> Projects { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Attachment> Attachments { get; set; }
+        public bool NotificationEnabled { get; set; }
+        public virtual List<Notification> Notifications { get; set; }
 
         [InverseProperty(nameof(Ticket.CreatedBy))]
         public virtual List<Ticket> CreatedTickets { get; set; }
@@ -35,7 +37,7 @@ namespace BugTracker.Models
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            ClaimsIdentity userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
         }
