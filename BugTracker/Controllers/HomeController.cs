@@ -1,6 +1,8 @@
 ﻿using BugTracker.Controllers.HelperController;
 using BugTracker.Models.Classes;
+using BugTracker.Models.Extensions;
 using BugTracker.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -12,7 +14,7 @@ namespace BugTracker.Controllers
     {
         public ActionResult Index()
         {
-            Models.ApplicationUser user = DefaultUserManager.FindByEmailAsync(User.Identity.Name).Result;
+            Models.ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
 
             HomeTicketAndProjectsViewModel model = new HomeTicketAndProjectsViewModel();
 

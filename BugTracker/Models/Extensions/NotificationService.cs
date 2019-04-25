@@ -1,19 +1,19 @@
 ﻿using Blog.Models.Extensions;
-using BugTracker.Controllers.HelperController;
 using BugTracker.Models.Classes;
-using System.Web.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
-namespace BugTracker.Controllers
+namespace BugTracker.Models.Extensions
 {
-    [Authorize]
-    public class NotificationsController : BaseController
+    public static class NotificationService
     {
-        // GET: Notification
-        public void SendNotification(Notification notification)
+        public static void SendNotification(ApplicationUser user, Notification notification)
         {
             MyEmailService emailService = new MyEmailService();
 
-            emailService.Send(User.Identity.Name,
+            emailService.Send(user.Email,
                               "MyBugTracker Notification, Re " + notification.Ticket.Title + " in Project " + notification.Ticket.Project.Name,
                               notification.Data);
         }
