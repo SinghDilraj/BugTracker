@@ -177,14 +177,17 @@
     <Compile Include="Controllers\AttachmentsController.cs" />
     <Compile Include="Controllers\HelperController\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Models\Classes\Attachment.cs" />
     <Compile Include="Models\Classes\Comment.cs" />
+    <Compile Include="Models\Classes\History.cs" />
     <Compile Include="Models\Classes\Notification.cs" />
     <Compile Include="Models\Extensions\FileHelper.cs" />
     <Compile Include="Models\ViewModels\AttachmentViewModel.cs" />
@@ -201,7 +204,7 @@
     <Compile Include="Models\Classes\TicketPriority.cs" />
     <Compile Include="Models\Classes\TicketStatus.cs" />
     <Compile Include="Models\Classes\TicketType.cs" />
-    <Compile Include="Models\Extensions\EmailService.cs" />
+    <Compile Include="Models\Extensions\MyEmailService.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\HomeProjectViewModel.cs" />
@@ -1788,6 +1791,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\History\" />
+    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

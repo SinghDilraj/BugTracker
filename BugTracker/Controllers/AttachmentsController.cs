@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class AttachmentsController : BaseController
     {
         [HttpPost]

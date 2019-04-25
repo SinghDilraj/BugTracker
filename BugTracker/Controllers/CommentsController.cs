@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class CommentsController : BaseController
     {
         [HttpPost]
