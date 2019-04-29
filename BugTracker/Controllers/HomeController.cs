@@ -1,9 +1,6 @@
 ﻿using BugTracker.Controllers.HelperController;
-using BugTracker.Models.Classes;
-using BugTracker.Models.Extensions;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 

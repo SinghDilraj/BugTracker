@@ -1,20 +1,28 @@
 ﻿using BugTracker.Models.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data.Entity;
 
 namespace BugTracker.Models.Extensions
 {
     public static class HistoryService
     {
-        public static void Create(ApplicationUser user)
+        public static ApplicationDbContext DbContext = new ApplicationDbContext();
+
+        public static void Create(ApplicationUser user, Ticket ticket, string prop, string oldValue, string newValue)
         {
             History history = new History
             {
                 ChangingUserId = user.Id,
-                ChangingUser = user
+                ChangingUser = user,
+                Ticket = ticket,
+                TicketId = ticket.Id,
+                PropertyChanged = prop,
+                OldValue = oldValue,
+                NewValue = newValue
             };
+
+            DbContext.Histories.Add(history);
+
+            DbContext.SaveChanges();
         }
     }
 }

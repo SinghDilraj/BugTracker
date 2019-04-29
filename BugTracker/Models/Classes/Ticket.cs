@@ -26,6 +26,7 @@ namespace BugTracker.Models.Classes
         public int ProjectId { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Attachment> Attachments { get; set; }
+        public virtual List<History> Histories { get; set; }
 
         public Ticket()
         {

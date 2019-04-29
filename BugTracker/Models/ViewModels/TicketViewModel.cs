@@ -37,5 +37,6 @@ namespace BugTracker.Models.ViewModels
         public string ProjectName { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Attachment> Attachments { get; set; }
+        public List<History> Histories { get; set; }
     }
 }

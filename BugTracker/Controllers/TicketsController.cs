@@ -1,13 +1,13 @@
-﻿using BugTracker.Models;
+﻿using BugTracker.Controllers.HelperController;
+using BugTracker.Models;
 using BugTracker.Models.Classes;
+using BugTracker.Models.Extensions;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using BugTracker.Controllers.HelperController;
 
 namespace BugTracker.Controllers
 {
@@ -223,15 +223,59 @@ namespace BugTracker.Controllers
                 Ticket ticket = DbContext.Tickets
                     .FirstOrDefault(p => p.Id == ticketId);
 
-                ticket.Title = model.Title;
-                ticket.Description = model.Description;
-                ticket.Project = DbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
-                ticket.Type = DbContext.TicketTypes.FirstOrDefault(p => p.Id == model.TypeId);
-                ticket.Priority = DbContext.TicketPriorities.FirstOrDefault(p => p.Id == model.ProjectId);
+                if (ticket.Title != model.Title)
+                {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Title", ticket.Title, model.Title);
+                    ticket.Title = model.Title;
+                };
+
+                if (ticket.Description != model.Description)
+                {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Description", ticket.Description, model.Description);
+                    ticket.Description = model.Description;
+                };
+
+                Project project = DbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
+
+                if (ticket.Project != project)
+                {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Project", ticket.Project.Name, project.Name);
+                    ticket.Project = project;
+                };
+
+                TicketType type = DbContext.TicketTypes.FirstOrDefault(p => p.Id == model.TypeId);
+
+                if (ticket.Type != type)
+                {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Type", ticket.Type.Name, type.Name);
+                    ticket.Type = type;
+                };
+
+                TicketPriority priority = DbContext.TicketPriorities.FirstOrDefault(p => p.Id == Convert.ToInt32(model.PriorityId));
+
+                if (ticket.Priority != priority)
+                {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Priority", ticket.Priority.Name, priority.Name);
+                    ticket.Priority = priority;
+                };
+
+                TicketStatus status = DbContext.TicketStatuses.FirstOrDefault(p => p.Id == model.StatusId);
+
+                if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
+                {
+                    if (ticket.Status != status)
+                    {
+                        HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, status.Name);
+                        ticket.Status = status;
+                    };
+                }
+                else
+                {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, "Open");
+                    ticket.Status = DbContext.TicketStatuses.FirstOrDefault(p => p.Name == "Open");
+                };
+
                 ticket.DateUpdated = DateTime.Now;
-                ticket.Status = User.IsInRole(Admin) || User.IsInRole(ProjectManager)
-                    ? DbContext.TicketStatuses.FirstOrDefault(p => p.Id == model.StatusId)
-                    : DbContext.TicketStatuses.FirstOrDefault(p => p.Name == "Open");
 
                 DbContext.SaveChanges();
 
@@ -318,6 +362,8 @@ namespace BugTracker.Controllers
 
                 if (add)
                 {
+                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assigned", ticket.AssignedTo.Email, user.Email);
+
                     ticket.AssignedTo = user;
                 }
                 else
@@ -356,7 +402,8 @@ namespace BugTracker.Controllers
                         StatusName = p.Status.Name,
                         ProjectName = p.Project.Name,
                         Comments = p.Comments,
-                        Attachments = p.Attachments
+                        Attachments = p.Attachments,
+                        Histories = p.Histories
                     })
                     .FirstOrDefault();
 
