@@ -12,7 +12,7 @@
             @foreach (Notification notification in Model.Notifications)
             {
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href=@Url.Action("Details", "Tickets", new { ticketId = notification.TicketId})>@notification.Title</a>
+                <a class="dropdown-item" href=@Url.Action("Details", "Tickets", new { ticketId = notification.TicketId})>@notification.Data</a>
             }
         </div>
     </li>

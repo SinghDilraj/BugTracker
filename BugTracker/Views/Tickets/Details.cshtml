@@ -188,4 +188,24 @@
             @Html.Partial("~/Views/Attachments/_AddAttachment.cshtml", new AttachmentViewModel() { Id = Model.Id })
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            @foreach (var history in Model.Histories)
+            {
+                <div class="card mb-3">  
+                    <div class="card-body">
+                        <div class="card-title text-primary">
+                            @history.PropertyChanged
+                        </div>
+                        <div class="card-subtitle text-primary text-muted">
+                            @history.ChangingUser.Email
+                        </div>
+                        <div class="card-text">
+                            @history.OldValue changed to @history.NewValue
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

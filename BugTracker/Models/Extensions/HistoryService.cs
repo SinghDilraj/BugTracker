@@ -5,9 +5,7 @@ namespace BugTracker.Models.Extensions
 {
     public static class HistoryService
     {
-        public static ApplicationDbContext DbContext = new ApplicationDbContext();
-
-        public static void Create(ApplicationUser user, Ticket ticket, string prop, string oldValue, string newValue)
+        public static History Create(ApplicationUser user, Ticket ticket, string prop, string oldValue, string newValue)
         {
             History history = new History
             {
@@ -20,9 +18,7 @@ namespace BugTracker.Models.Extensions
                 NewValue = newValue
             };
 
-            DbContext.Histories.Add(history);
-
-            DbContext.SaveChanges();
+            return history;
         }
     }
 }

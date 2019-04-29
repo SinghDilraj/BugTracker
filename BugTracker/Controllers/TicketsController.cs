@@ -33,15 +33,15 @@ namespace BugTracker.Controllers
                     .Select(p => p)
                     .ToList();
 
-                SelectList projectList = new SelectList(projects, "Name", "Id");
+                SelectList projectList = new SelectList(projects, "Id", "Name");
 
                 ViewData["projects"] = projectList;
 
-                SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
+                SelectList typeList = new SelectList(DbContext.TicketTypes, "Id", "Name");
 
                 ViewData["types"] = typeList;
 
-                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
+                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Id", "Name");
 
                 ViewData["priorities"] = priorityList;
 
@@ -68,15 +68,15 @@ namespace BugTracker.Controllers
                         .Select(p => p)
                         .ToList();
 
-                    SelectList projectList = new SelectList(projects, "Name", "Id");
+                    SelectList projectList = new SelectList(projects, "Id", "Name");
 
                     ViewData["projects"] = projectList;
 
-                    SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
+                    SelectList typeList = new SelectList(DbContext.TicketTypes, "Id", "Name");
 
                     ViewData["types"] = typeList;
 
-                    SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
+                    SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Id", "Name");
 
                     ViewData["priorities"] = priorityList;
 
@@ -137,19 +137,19 @@ namespace BugTracker.Controllers
                         .Select(p => p)
                         .ToList();
 
-                SelectList projectList = new SelectList(projects, "Name", "Id");
+                SelectList projectList = new SelectList(projects, "Id", "Name");
 
                 ViewData["projects"] = projectList;
 
-                SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
+                SelectList typeList = new SelectList(DbContext.TicketTypes, "Id", "Name");
 
                 ViewData["types"] = typeList;
 
-                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
+                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Id", "Name");
 
                 ViewData["priorities"] = priorityList;
 
-                SelectList statusList = new SelectList(DbContext.TicketStatuses, "Name", "Id");
+                SelectList statusList = new SelectList(DbContext.TicketStatuses, "Id", "Name");
 
                 ViewData["statuses"] = statusList;
 
@@ -200,19 +200,19 @@ namespace BugTracker.Controllers
                         .Select(p => p)
                         .ToList();
 
-                SelectList projectList = new SelectList(projects, "Name", "Id");
+                SelectList projectList = new SelectList(projects, "Id", "Name");
 
                 ViewData["projects"] = projectList;
 
-                SelectList typeList = new SelectList(DbContext.TicketTypes, "Name", "Id");
+                SelectList typeList = new SelectList(DbContext.TicketTypes, "Id", "Name");
 
                 ViewData["types"] = typeList;
 
-                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Name", "Id");
+                SelectList priorityList = new SelectList(DbContext.TicketPriorities, "Id", "Name");
 
                 ViewData["priorities"] = priorityList;
 
-                SelectList statusList = new SelectList(DbContext.TicketStatuses, "Name", "Id");
+                SelectList statusList = new SelectList(DbContext.TicketStatuses, "Id", "Name");
 
                 ViewData["statuses"] = statusList;
 
@@ -225,13 +225,15 @@ namespace BugTracker.Controllers
 
                 if (ticket.Title != model.Title)
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Title", ticket.Title, model.Title);
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Title", ticket.Title, model.Title);
+                    DbContext.Histories.Add(history);
                     ticket.Title = model.Title;
                 };
 
                 if (ticket.Description != model.Description)
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Description", ticket.Description, model.Description);
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Description", ticket.Description, model.Description);
+                    DbContext.Histories.Add(history);
                     ticket.Description = model.Description;
                 };
 
@@ -239,7 +241,8 @@ namespace BugTracker.Controllers
 
                 if (ticket.Project != project)
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Project", ticket.Project.Name, project.Name);
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Project", ticket.Project.Name, project.Name);
+                    DbContext.Histories.Add(history);
                     ticket.Project = project;
                 };
 
@@ -247,15 +250,18 @@ namespace BugTracker.Controllers
 
                 if (ticket.Type != type)
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Type", ticket.Type.Name, type.Name);
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Type", ticket.Type.Name, type.Name);
+                    DbContext.Histories.Add(history);
                     ticket.Type = type;
                 };
 
-                TicketPriority priority = DbContext.TicketPriorities.FirstOrDefault(p => p.Id == Convert.ToInt32(model.PriorityId));
+                int priorityId = Convert.ToInt32(model.PriorityId);
+                TicketPriority priority = DbContext.TicketPriorities.FirstOrDefault(p => p.Id == priorityId);
 
                 if (ticket.Priority != priority)
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Priority", ticket.Priority.Name, priority.Name);
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Priority", ticket.Priority.Name, priority.Name);
+                    DbContext.Histories.Add(history);
                     ticket.Priority = priority;
                 };
 
@@ -265,13 +271,15 @@ namespace BugTracker.Controllers
                 {
                     if (ticket.Status != status)
                     {
-                        HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, status.Name);
+                        History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, status.Name);
+                        DbContext.Histories.Add(history);
                         ticket.Status = status;
                     };
                 }
                 else
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, "Open");
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, "Open");
+                    DbContext.Histories.Add(history);
                     ticket.Status = DbContext.TicketStatuses.FirstOrDefault(p => p.Name == "Open");
                 };
 
@@ -362,8 +370,8 @@ namespace BugTracker.Controllers
 
                 if (add)
                 {
-                    HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assigned", ticket.AssignedTo.Email, user.Email);
-
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assigned", ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email, user.Email);
+                    DbContext.Histories.Add(history);
                     ticket.AssignedTo = user;
                 }
                 else
