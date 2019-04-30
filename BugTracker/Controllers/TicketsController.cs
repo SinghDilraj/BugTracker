@@ -226,6 +226,7 @@ namespace BugTracker.Controllers
                 if (ticket.Title != model.Title)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Title", ticket.Title, model.Title);
+                    NotificationService.Create(ticket, $"Ticket title changed to {model.Title}");
                     DbContext.Histories.Add(history);
                     ticket.Title = model.Title;
                 };
@@ -233,6 +234,7 @@ namespace BugTracker.Controllers
                 if (ticket.Description != model.Description)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Description", ticket.Description, model.Description);
+                    NotificationService.Create(ticket, $"Ticket description changed to {model.Description}");
                     DbContext.Histories.Add(history);
                     ticket.Description = model.Description;
                 };
@@ -242,6 +244,7 @@ namespace BugTracker.Controllers
                 if (ticket.Project != project)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Project", ticket.Project.Name, project.Name);
+                    NotificationService.Create(ticket, $"Ticket Project changed to {project.Name}");
                     DbContext.Histories.Add(history);
                     ticket.Project = project;
                 };
@@ -251,6 +254,7 @@ namespace BugTracker.Controllers
                 if (ticket.Type != type)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Type", ticket.Type.Name, type.Name);
+                    NotificationService.Create(ticket, $"Ticket type changed to {type.Name}");
                     DbContext.Histories.Add(history);
                     ticket.Type = type;
                 };
@@ -261,6 +265,7 @@ namespace BugTracker.Controllers
                 if (ticket.Priority != priority)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Priority", ticket.Priority.Name, priority.Name);
+                    NotificationService.Create(ticket, $"Ticket priority changed to {priority.Name}");
                     DbContext.Histories.Add(history);
                     ticket.Priority = priority;
                 };
@@ -272,6 +277,7 @@ namespace BugTracker.Controllers
                     if (ticket.Status != status)
                     {
                         History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, status.Name);
+                        NotificationService.Create(ticket, $"Ticket status changed to {status.Name}");
                         DbContext.Histories.Add(history);
                         ticket.Status = status;
                     };
@@ -279,6 +285,7 @@ namespace BugTracker.Controllers
                 else
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Status", ticket.Status.Name, "Open");
+                    NotificationService.Create(ticket, $"Ticket status changed to Open");
                     DbContext.Histories.Add(history);
                     ticket.Status = DbContext.TicketStatuses.FirstOrDefault(p => p.Name == "Open");
                 };
@@ -371,6 +378,7 @@ namespace BugTracker.Controllers
                 if (add)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assignee", ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email, user.Email);
+                    NotificationService.Create(ticket, $"Ticket assigned to ${(ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email)}");
                     DbContext.Histories.Add(history);
                     ticket.AssignedTo = user;
                 }

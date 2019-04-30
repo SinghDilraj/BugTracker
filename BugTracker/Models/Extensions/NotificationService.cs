@@ -1,14 +1,22 @@
 ﻿using Blog.Models.Extensions;
 using BugTracker.Models.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace BugTracker.Models.Extensions
 {
     public static class NotificationService
     {
+        public static void Create(Ticket ticket, string data)
+        {
+            Notification notification = new Notification
+            {
+                Ticket = ticket,
+                TicketId = ticket.Id,
+                Data = data
+            };
+
+            SendNotification(ticket.AssignedTo, notification);
+        }
+
         public static void SendNotification(ApplicationUser user, Notification notification)
         {
             MyEmailService emailService = new MyEmailService();

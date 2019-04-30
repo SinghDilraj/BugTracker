@@ -1,6 +1,7 @@
 ﻿using BugTracker.Controllers.HelperController;
 using BugTracker.Models;
 using BugTracker.Models.Classes;
+using BugTracker.Models.Extensions;
 using BugTracker.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace BugTracker.Controllers
 
             if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
             {
+                NotificationService.Create(ticket, $"Ticket comment added ->> {comment.Title}");
+
                 DbContext.Comments.Add(comment);
 
                 DbContext.SaveChanges();
@@ -42,6 +45,8 @@ namespace BugTracker.Controllers
             {
                 if (ticket.CreatedBy == user)
                 {
+                    NotificationService.Create(ticket, $"Ticket comment added ->> {comment.Title}");
+
                     DbContext.Comments.Add(comment);
 
                     DbContext.SaveChanges();
@@ -57,6 +62,8 @@ namespace BugTracker.Controllers
             {
                 if (ticket.AssignedTo == user)
                 {
+                    NotificationService.Create(ticket, $"Ticket comment added ->> {comment.Title}");
+
                     DbContext.Comments.Add(comment);
 
                     DbContext.SaveChanges();
