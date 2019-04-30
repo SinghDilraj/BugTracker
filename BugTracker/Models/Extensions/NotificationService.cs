@@ -15,6 +15,11 @@ namespace BugTracker.Models.Extensions
             };
 
             SendNotification(ticket.AssignedTo, notification);
+
+            foreach (ApplicationUser user in ticket.Subscribers)
+            {
+                SendNotification(user, notification);
+            }
         }
 
         public static void SendNotification(ApplicationUser user, Notification notification)

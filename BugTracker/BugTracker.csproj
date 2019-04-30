@@ -179,6 +179,7 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />

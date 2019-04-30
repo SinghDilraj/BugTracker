@@ -2,15 +2,36 @@
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="@Url.Action("Details", "Tickets")">Ticket Details</a>
+        <a href="@Url.Action("Details", "Tickets", new { ticketId=Model.Id})">Ticket Details</a>
     </li>
 </ol>
 
 <div class="jumbotron">
     <h1 class="display-4">@Model.Title</h1>
     <p class="lead mt-3">@Model.Description</p>
-    <a class="btn btn-primary" href="#content">Comments</a>
-    <a class="btn btn-primary" href="#content">Attachments</a>
+    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+    {
+        if (Model.Subscribers.Any(p => p.Id == User.Identity.GetUserId()))
+        {
+            using (Html.BeginForm("Subscribe", "Notifications", new { ticketId = Model.Id, userId = User.Identity.GetUserId(), subscribe = false }, FormMethod.Post, new { @class = "form-inline mt-4" }))
+            {
+                <span>To stop Recieving Notifications for this ticket</span>
+                <button class="btn btn-danger ml-3" onclick="this.form.submit();">
+                    UnSubscribe
+                </button>
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("Subscribe", "Notifications", new { ticketId = Model.Id, userId = User.Identity.GetUserId(), subscribe = true }, FormMethod.Post, new { @class = "form-inline mt-4" }))
+            {
+                <span>To Recieve Notifications for this ticket</span>
+                <button class="btn btn-success ml-3" onclick="this.form.submit();">
+                    Subscribe
+                </button>
+            }
+        }
+    }
 </div>
 <div class="container">
     <div class="card-deck mb-4">

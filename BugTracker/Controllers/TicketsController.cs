@@ -419,7 +419,8 @@ namespace BugTracker.Controllers
                         ProjectName = p.Project.Name,
                         Comments = p.Comments,
                         Attachments = p.Attachments,
-                        Histories = p.Histories
+                        Histories = p.Histories,
+                        Subscribers = p.Subscribers
                     })
                     .FirstOrDefault();
 
