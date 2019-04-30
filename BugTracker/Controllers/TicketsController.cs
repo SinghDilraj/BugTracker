@@ -370,7 +370,7 @@ namespace BugTracker.Controllers
 
                 if (add)
                 {
-                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assigned", ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email, user.Email);
+                    History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assignee", ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email, user.Email);
                     DbContext.Histories.Add(history);
                     ticket.AssignedTo = user;
                 }
@@ -414,6 +414,8 @@ namespace BugTracker.Controllers
                         Histories = p.Histories
                     })
                     .FirstOrDefault();
+
+                model.Histories.Reverse();
 
                 return View(model);
             }

@@ -119,19 +119,19 @@
     </div>
 </div>
 <hr />
-<div class="container mt-5" id="content">
+<div class="container mt-5 text-center" id="content">
     <div class="row">
         <div class="col-6">
-            <h4 class="text-center">Comments</h4>
+            <h4 class="">Comments</h4>
             @foreach (var comment in Model.Comments)
             {
-                <div class="col-md-7 border border-primary rounded-left rounded-right rounded-lg mb-2">
+                <div class="col-md-7 border border-primary rounded-left rounded-right rounded-lg mb-2 ml-auto mr-auto">
                     @if (!string.IsNullOrEmpty(comment.CreatedBy.UserName))
                     {
                         <pre class="text-muted">By:- @comment.CreatedBy.UserName</pre>
                     }
                     <span class="text-info">
-                        @comment.Title
+                        [ @comment.Title ]
                     </span>
                     @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
                     {
@@ -162,12 +162,12 @@
             <h4 class="text-center">Attachments</h4>
             @foreach (var attachment in Model.Attachments)
             {
-                <div class="col-md-7 border border-primary rounded-left rounded-right rounded-lg mb-2">
+                <div class="col-md-7 border border-primary rounded-left rounded-right rounded-lg mb-2  ml-auto mr-auto">
                     @if (!string.IsNullOrEmpty(attachment.CreatedBy.UserName))
                     {
                         <pre class="text-muted">By:- @attachment.CreatedBy.UserName</pre>
                     }
-                    <span class="text-info"><a href="@attachment.FileUrl" download="">@attachment.FileName</a></span>
+                    <span class="text-info"><a href="@attachment.FileUrl" download="">[ @attachment.FileName ]</a></span>
                     @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
                     {
                         <span class="ml-4">
@@ -192,7 +192,7 @@
         <div class="col-12">
             @foreach (var history in Model.Histories)
             {
-                <div class="card mb-3">  
+                <div class="card mb-3">
                     <div class="card-body">
                         <div class="card-title text-primary">
                             @history.PropertyChanged
