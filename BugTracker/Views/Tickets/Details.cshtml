@@ -16,7 +16,7 @@
             using (Html.BeginForm("Subscribe", "Notifications", new { ticketId = Model.Id, userId = User.Identity.GetUserId(), subscribe = false }, FormMethod.Post, new { @class = "form-inline mt-4" }))
             {
                 <span>To stop Recieving Notifications for this ticket</span>
-                <button class="btn btn-danger ml-3" onclick="this.form.submit();">
+                <button class="btn btn-danger ml-3" type="submit">
                     UnSubscribe
                 </button>
             }
@@ -26,7 +26,7 @@
             using (Html.BeginForm("Subscribe", "Notifications", new { ticketId = Model.Id, userId = User.Identity.GetUserId(), subscribe = true }, FormMethod.Post, new { @class = "form-inline mt-4" }))
             {
                 <span>To Recieve Notifications for this ticket</span>
-                <button class="btn btn-success ml-3" onclick="this.form.submit();">
+                <button class="btn btn-success ml-3" type="submit">
                     Subscribe
                 </button>
             }
