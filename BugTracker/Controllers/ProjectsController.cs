@@ -147,7 +147,7 @@ namespace BugTracker.Controllers
         }
 
         [Authorize(Roles = AdminAndProjectManager)]
-        public ActionResult Archive(int? projectId, bool add)
+        public ActionResult Archive(int? projectId)
         {
             if (projectId.HasValue)
             {
