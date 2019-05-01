@@ -378,9 +378,10 @@ namespace BugTracker.Controllers
                 if (add)
                 {
                     History history = HistoryService.Create(DefaultUserManager.FindById(User.Identity.GetUserId()), ticket, "Assignee", ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email, user.Email);
-                    NotificationService.Create(ticket, $"Ticket assigned to ${(ticket.AssignedTo == null ? "None" : ticket.AssignedTo.Email)}");
+                    NotificationService.Create(ticket, $"Ticket assigned to ${user.Email}");
                     DbContext.Histories.Add(history);
                     ticket.AssignedTo = user;
+                    NotificationService.Create(ticket, $"This Ticket is assigned to you ->> ${ticket.AssignedTo.Email}");
                 }
                 else
                 {
