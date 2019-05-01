@@ -53,7 +53,7 @@ namespace BugTracker.Controllers
             }
 
             HomeProjectViewModel project = DbContext.Projects
-                .Where(p => p.Id == id)
+                .Where(p => p.Id == id && !p.Archived)
                 .Select(p => new HomeProjectViewModel
                 {
                     Name = p.Name,
@@ -77,7 +77,7 @@ namespace BugTracker.Controllers
             }
 
             Project project = DbContext.Projects
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == id && !p.Archived);
 
             if (project == null)
             {
@@ -101,7 +101,7 @@ namespace BugTracker.Controllers
             }
 
             Project project = DbContext.Projects
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == id && !p.Archived);
 
             if (project == null)
             {
@@ -126,7 +126,7 @@ namespace BugTracker.Controllers
             else
             {
                 Project project = DbContext.Projects.
-                    FirstOrDefault(p => p.Id == projectId);
+                    FirstOrDefault(p => p.Id == projectId && !p.Archived);
 
                 ApplicationUser user = DbContext.Users
                 .FirstOrDefault(p => p.Id == userId);
@@ -151,7 +151,7 @@ namespace BugTracker.Controllers
         {
             if (projectId.HasValue)
             {
-                Project project = DbContext.Projects.FirstOrDefault(p => p.Id == projectId);
+                Project project = DbContext.Projects.FirstOrDefault(p => p.Id == projectId && !p.Archived);
 
                 project.Archived = true;
 

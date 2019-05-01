@@ -28,7 +28,7 @@ namespace BugTracker.Controllers
             else
             {
                 model.Tickets = DbContext.Tickets.Select(p => p).ToList();
-                model.Projects = DbContext.Projects.Select(p => p).ToList();
+                model.Projects = DbContext.Projects.Where(p => !p.Archived).Select(p => p).ToList();
             }
 
             return View(model);
@@ -53,7 +53,7 @@ namespace BugTracker.Controllers
             else
             {
                 model.Tickets = DbContext.Tickets.Select(p => p).ToList();
-                model.Projects = DbContext.Projects.Select(p => p).ToList();
+                model.Projects = DbContext.Projects.Where(p => !p.Archived).Select(p => p).ToList();
             }
 
             if (User.IsInRole(Admin) || User.IsInRole(ProjectManager) || User.IsInRole(Developer))

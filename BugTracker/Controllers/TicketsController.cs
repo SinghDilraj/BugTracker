@@ -29,7 +29,7 @@ namespace BugTracker.Controllers
                 TicketViewModel model = new TicketViewModel();
 
                 List<Project> projects = DbContext.Projects
-                    .Where(p => p.Users.Any(q => q.Id == userId))
+                    .Where(p => p.Users.Any(q => q.Id == userId) && !p.Archived)
                     .Select(p => p)
                     .ToList();
 
@@ -64,7 +64,7 @@ namespace BugTracker.Controllers
                 if (!ModelState.IsValid)
                 {
                     List<Project> projects = DbContext.Projects
-                        .Where(p => p.Users.Any(q => q.Id == userId))
+                        .Where(p => p.Users.Any(q => q.Id == userId) && !p.Archived)
                         .Select(p => p)
                         .ToList();
 
@@ -91,7 +91,7 @@ namespace BugTracker.Controllers
                 {
                     Title = model.Title,
                     Description = model.Description,
-                    Project = DbContext.Projects.Where(p => p.Id == projectId).FirstOrDefault(),
+                    Project = DbContext.Projects.Where(p => p.Id == projectId && !p.Archived).FirstOrDefault(),
                     Priority = DbContext.TicketPriorities.Where(p => p.Id == priorityId).FirstOrDefault(),
                     Type = DbContext.TicketTypes.Where(p => p.Id == typeId).FirstOrDefault(),
                     Status = DbContext.TicketStatuses.Where(p => p.Name == "Open").FirstOrDefault(),
@@ -133,7 +133,7 @@ namespace BugTracker.Controllers
                 };
 
                 List<Project> projects = DbContext.Projects
-                        .Where(p => p.Users.Any(q => q.Id == userId))
+                        .Where(p => p.Users.Any(q => q.Id == userId) && !p.Archived)
                         .Select(p => p)
                         .ToList();
 
@@ -196,7 +196,7 @@ namespace BugTracker.Controllers
             if (!ModelState.IsValid || !ticketId.HasValue)
             {
                 List<Project> projects = DbContext.Projects
-                        .Where(p => p.Users.Any(q => q.Id == userId))
+                        .Where(p => p.Users.Any(q => q.Id == userId) && !p.Archived)
                         .Select(p => p)
                         .ToList();
 
@@ -239,7 +239,7 @@ namespace BugTracker.Controllers
                     ticket.Description = model.Description;
                 };
 
-                Project project = DbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId);
+                Project project = DbContext.Projects.FirstOrDefault(p => p.Id == model.ProjectId && !p.Archived);
 
                 if (ticket.Project != project)
                 {
