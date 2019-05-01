@@ -147,13 +147,13 @@ namespace BugTracker.Controllers
         }
 
         [Authorize(Roles = AdminAndProjectManager)]
-        public ActionResult Archive(int? projectId)
+        public ActionResult Archive(int? projectId, bool add)
         {
             if (projectId.HasValue)
             {
                 Project project = DbContext.Projects.FirstOrDefault(p => p.Id == projectId);
 
-                project.Archive = true;
+                project.Archived = true;
 
                 DbContext.SaveChanges();
 
@@ -169,7 +169,9 @@ namespace BugTracker.Controllers
         [HttpGet]
         public ActionResult AllProjects()
         {
-            List<HomeProjectViewModel> projects = DbContext.Projects.Select(p =>
+            List<HomeProjectViewModel> projects = DbContext.Projects
+                .Where(p => !p.Archived)
+                .Select(p =>
                 new HomeProjectViewModel
                 {
                     Id = p.Id,
@@ -178,7 +180,7 @@ namespace BugTracker.Controllers
                     DateUpdated = p.DateUpdated,
                     Users = p.Users,
                     Tickets = p.Tickets,
-                    Archive = p.Archive
+                    Archive = p.Archived
                 }).ToList();
 
             return View(projects);
@@ -190,7 +192,7 @@ namespace BugTracker.Controllers
             string userId = User.Identity.GetUserId();
 
             List<HomeProjectViewModel> projects = DbContext.Projects
-                .Where(p => p.Users.Any(x => x.Id == userId))
+                .Where(p => p.Users.Any(x => x.Id == userId) && !p.Archived)
                 .Select(p =>
                 new HomeProjectViewModel
                 {

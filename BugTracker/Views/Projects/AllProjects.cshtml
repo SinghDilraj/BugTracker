@@ -66,13 +66,9 @@
                             <td><a href="@Url.Action("EditProject", "Projects", new {id = project.Id})"><i class="fa fa-wrench ml-3"></i></a></td>
                             <td><a href="@Url.Action("DeleteProject", "Projects", new {id = project.Id})"><i class="fa fa-trash ml-4"></i></a></td>
                             <td><a href="@Url.Action("AllUsersForProjects", "Users", new {id = project.Id})"><i class="fa fa-user-plus ml-4"></i></a></td>
-                            @if (project.Archive)
+                            @if (!project.Archive)
                             {
-                                <td><a href="@Url.Action("Archive", "Projects", new {projectId = project.Id, add=false})" class="text-danger"><i class="fa fa-archive ml-4"> </i> <i class="fa fa-times"></i></a></td>
-                            }
-                            else
-                            {
-                                <td><a href="@Url.Action("Archive", "Projects", new {projectId = project.Id, add=true})" class="text-success"><i class="fa fa-archive ml-4"> </i> <i class="fa fa-plus"></i></a></td>
+                                <td><a href="@Url.Action("Archive", "Projects", new {projectId = project.Id})" class="text-success"><i class="fa fa-archive ml-4"> </i> <i class="fa fa-plus"></i></a></td>
                             }
                         </tr>
                     }

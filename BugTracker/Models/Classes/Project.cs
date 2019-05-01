@@ -13,7 +13,7 @@ namespace BugTracker.Models.Classes
         public DateTime? DateUpdated { get; set; }
         public virtual List<ApplicationUser> Users { get; set; }
         public virtual List<Ticket> Tickets { get; set; }
-        public bool Archive { get; set; }
+        public bool Archived { get; set; }
 
         public Project()
         {
