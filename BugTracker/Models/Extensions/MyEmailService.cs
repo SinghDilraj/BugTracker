@@ -1,33 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Net;
 using System.Net.Mail;
-using System.Web;
 
 namespace Blog.Models.Extensions
 {
     public class MyEmailService
     {
-        public string SmtpHost = "smtp.mailtrap.io";
-        public int SmtpPort = 2525;
-        public string SmtpUsername = "c2716a1025a38a";
-        public string SmtpPassword = "31a4dc60c81fae";
-        public string SmtpSender = "Admin@bugtracker.com";
+        private readonly string SmtpHost = ConfigurationManager.AppSettings["SmtpHost"];
+        private readonly int SmtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPort"]);
+        private readonly string SmtpUsername = ConfigurationManager.AppSettings["SmtpUsername"];
+        private readonly string SmtpPassword = ConfigurationManager.AppSettings["SmtpPassword"];
+        private readonly string SmtpFrom = ConfigurationManager.AppSettings["SmtpFrom"];
 
         public void Send(string receiver, string subject, string body)
         {
-            MailMessage message = new MailMessage(SmtpSender, receiver);
+            MailMessage message = new MailMessage(SmtpFrom, receiver)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
 
-            message.Subject = subject;
-            message.Body = body;
-            message.IsBodyHtml = true;
+            SmtpClient smtpClient = new SmtpClient(SmtpHost, SmtpPort)
+            {
+                Credentials = new NetworkCredential(SmtpUsername, SmtpPassword),
 
-            SmtpClient smtpClient = new SmtpClient(SmtpHost, SmtpPort);
-
-            smtpClient.Credentials = new NetworkCredential(SmtpUsername, SmtpPassword);
-
-            smtpClient.EnableSsl = true;
+                EnableSsl = true
+            };
 
             smtpClient.Send(message);
         }

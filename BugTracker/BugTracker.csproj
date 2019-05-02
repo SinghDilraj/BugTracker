@@ -1833,6 +1833,7 @@
     <Content Include="Views\Attachments\_AddAttachment.cshtml" />
     <Content Include="Views\Comments\EditComment.cshtml" />
     <Content Include="Views\Home\_LayoutTicketsAndProjects.cshtml" />
+    <Content Include="Private.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
