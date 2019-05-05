@@ -24,6 +24,8 @@ namespace BugTracker.Models
 
         [InverseProperty(nameof(Ticket.AssignedTo))]
         public virtual List<Ticket> AssignedTickets { get; set; }
+        [InverseProperty(nameof(Ticket.Subscribers))]
+        public virtual List<Ticket> SubscribedTickets { get; set; }
 
         public ApplicationUser()
         {

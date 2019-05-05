@@ -118,7 +118,7 @@ namespace BugTracker.Controllers
             else
             {
                 Ticket ticket = DbContext.Tickets
-                    .FirstOrDefault(p => p.Id == ticketId);
+                    .FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
                 TicketViewModel model = new TicketViewModel
                 {
@@ -221,7 +221,7 @@ namespace BugTracker.Controllers
             else
             {
                 Ticket ticket = DbContext.Tickets
-                    .FirstOrDefault(p => p.Id == ticketId);
+                    .FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
                 if (ticket.Title != model.Title)
                 {
@@ -312,7 +312,7 @@ namespace BugTracker.Controllers
                 ApplicationUser user = DefaultUserManager.FindById(userId);
 
                 Ticket ticket = DbContext.Tickets
-                    .FirstOrDefault(p => p.Id == ticketId);
+                    .FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
                 if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
                 {
@@ -370,7 +370,7 @@ namespace BugTracker.Controllers
             else
             {
                 Ticket ticket = DbContext.Tickets
-                    .FirstOrDefault(p => p.Id == ticketId);
+                    .FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
                 ApplicationUser user = DbContext.Users
                 .FirstOrDefault(p => p.Id == userId);
@@ -404,7 +404,7 @@ namespace BugTracker.Controllers
             else
             {
                 TicketViewModel model = DbContext.Tickets
-                    .Where(p => p.Id == ticketId)
+                    .Where(p => p.Id == ticketId && !p.Project.Archived)
                     .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
@@ -446,7 +446,7 @@ namespace BugTracker.Controllers
                                                && !User.IsInRole(Admin)
                                                && !User.IsInRole(ProjectManager)) || (User.IsInRole(Developer) && !User.IsInRole(Admin) && !User.IsInRole(ProjectManager))
                     ? DbContext.Tickets
-                            .Where(p => p.Project.Users.Any(q => q.Id == userId))
+                            .Where(p => p.Project.Users.Any(q => q.Id == userId) && !p.Project.Archived)
                             .Select(p => new TicketViewModel
                             {
                                 Id = p.Id,
@@ -462,6 +462,7 @@ namespace BugTracker.Controllers
                                 AssignedToName = p.AssignedTo.Email
                             }).ToList()
                     : DbContext.Tickets
+                            .Where(p => !p.Project.Archived)
                             .Select(p => new TicketViewModel
                             {
                                 Id = p.Id,
@@ -494,7 +495,7 @@ namespace BugTracker.Controllers
             {
                 List<TicketViewModel> model = User.IsInRole(Submitter)
                     ? DbContext.Tickets
-                    .Where(p => p.CreatedBy.Id == userId)
+                    .Where(p => p.CreatedBy.Id == userId && !p.Project.Archived)
                     .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
@@ -510,7 +511,7 @@ namespace BugTracker.Controllers
                         AssignedToName = p.AssignedTo.Email
                     }).ToList()
                     : DbContext.Tickets
-                    .Where(p => p.AssignedTo.Id == userId)
+                    .Where(p => p.AssignedTo.Id == userId && !p.Project.Archived)
                     .Select(p => new TicketViewModel
                     {
                         Id = p.Id,
