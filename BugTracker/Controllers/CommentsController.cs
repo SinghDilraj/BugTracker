@@ -22,7 +22,7 @@ namespace BugTracker.Controllers
 
             ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
 
-            Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
+            Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
             Comment comment = new Comment()
             {
@@ -85,7 +85,7 @@ namespace BugTracker.Controllers
         {
             if (commentId.HasValue)
             {
-                Comment comment = DbContext.Comments.FirstOrDefault(p => p.Id == commentId);
+                Comment comment = DbContext.Comments.FirstOrDefault(p => p.Id == commentId && !p.Ticket.Project.Archived);
 
                 string userId = User.Identity.GetUserId();
 
@@ -118,7 +118,7 @@ namespace BugTracker.Controllers
         {
             if (commentId.HasValue)
             {
-                Comment comment = DbContext.Comments.FirstOrDefault(p => p.Id == commentId);
+                Comment comment = DbContext.Comments.FirstOrDefault(p => p.Id == commentId && !p.Ticket.Project.Archived);
 
                 string userId = User.Identity.GetUserId();
 
@@ -162,7 +162,7 @@ namespace BugTracker.Controllers
         {
             if (commentId.HasValue)
             {
-                Comment comment = DbContext.Comments.FirstOrDefault(p => p.Id == commentId);
+                Comment comment = DbContext.Comments.FirstOrDefault(p => p.Id == commentId && !p.Ticket.Project.Archived);
 
                 if (ModelState.IsValid)
                 {

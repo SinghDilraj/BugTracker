@@ -42,23 +42,18 @@ namespace BugTracker.Controllers
 
             if (User.IsInRole(Submitter))
             {
-                model.Tickets = user.CreatedTickets;
-                model.Projects = user.Projects;
+                model.Tickets = user.CreatedTickets.Where(p => !p.Project.Archived).Select(p => p).ToList();
+                model.Projects = user.Projects.Where(p => !p.Archived).Select(p => p).ToList();
             }
             else if (User.IsInRole(Developer))
             {
-                model.Tickets = user.AssignedTickets;
-                model.Projects = user.Projects;
+                model.Tickets = user.AssignedTickets.Where(p => !p.Project.Archived).Select(p => p).ToList();
+                model.Projects = user.Projects.Where(p => !p.Archived).Select(p => p).ToList();
             }
             else
             {
-                model.Tickets = DbContext.Tickets.Select(p => p).ToList();
+                model.Tickets = DbContext.Tickets.Where(q => !q.Project.Archived).Select(p => p).ToList();
                 model.Projects = DbContext.Projects.Where(p => !p.Archived).Select(p => p).ToList();
-            }
-
-            if (User.IsInRole(Admin) || User.IsInRole(ProjectManager) || User.IsInRole(Developer))
-            {
-                model.Notifications = user.Notifications;
             }
 
             return PartialView("_LayoutTicketsAndProjects", model);

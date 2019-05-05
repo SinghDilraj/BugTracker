@@ -40,7 +40,7 @@ namespace BugTracker.Controllers
 
                 ApplicationUser user = DefaultUserManager.FindById(User.Identity.GetUserId());
 
-                Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
+                Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
                 if (User.IsInRole(Admin) || User.IsInRole(ProjectManager))
                 {
@@ -101,7 +101,7 @@ namespace BugTracker.Controllers
         {
             if (attachmentId.HasValue)
             {
-                Attachment attachment = DbContext.Attachments.FirstOrDefault(p => p.Id == attachmentId);
+                Attachment attachment = DbContext.Attachments.FirstOrDefault(p => p.Id == attachmentId && !p.Ticket.Project.Archived);
 
                 string userId = User.Identity.GetUserId();
 

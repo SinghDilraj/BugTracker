@@ -11,7 +11,7 @@ namespace BugTracker.Controllers
         {
             if (!string.IsNullOrEmpty(userId) && ticketId.HasValue)
             {
-                Models.Classes.Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId);
+                Models.Classes.Ticket ticket = DbContext.Tickets.FirstOrDefault(p => p.Id == ticketId && !p.Project.Archived);
 
                 Models.ApplicationUser user = DbContext.Users.FirstOrDefault(p => p.Id == userId);
 
