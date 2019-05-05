@@ -1,22 +1,5 @@
 ﻿@model HomeTicketAndProjectsViewModel
 
-@if (!User.IsInRole("Submitter"))
-{
-    <li class="nav-item dropdown mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-bell fa-fw"></i>
-            <span class="badge badge-danger">@Model.Notifications.Count</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-            <span class="dropdown-item text-muted">Notifications</span>
-            @foreach (Notification notification in Model.Notifications)
-            {
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href=@Url.Action("Details", "Tickets", new { ticketId = notification.TicketId})>@notification.Data</a>
-            }
-        </div>
-    </li>
-}
 <li class="nav-item dropdown mx-1">
     <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-archive fa-fw"></i>
